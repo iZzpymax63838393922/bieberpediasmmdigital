@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bieberpedia.id — Digital Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+:root{--bg:#030305;--card:#0d0d13;--pri:#ef4444;--gold:#fbbf24;--ok:#22c55e;--wa:#25d366;--tg:#0088cc;--mut:#94a3b8;--line:rgba(255,255,255,.06);--sbw:270px}
+body{background:radial-gradient(ellipse at 20% 0%,rgba(239,68,68,.06) 0%,transparent 40%),radial-gradient(ellipse at 80% 100%,rgba(251,191,36,.04) 0%,transparent 40%),linear-gradient(180deg,#0a0a10 0%,#030305 100%);background-attachment:fixed;color:#f8fafc;min-height:100vh;overflow-x:hidden;-webkit-user-select:none;user-select:none;letter-spacing:-.01em}
+img{-webkit-user-drag:none}
+input,textarea,select{-webkit-user-select:text;user-select:text}
+.hide{display:none!important}
+button{letter-spacing:-.01em;font-family:inherit}
+.spinner{width:46px;height:46px;border:3px solid rgba(239,68,68,.15);border-top-color:var(--pri);border-radius:50%;animation:spin .9s linear infinite}
+.spinner-sm{width:15px;height:15px;border:2px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;display:inline-block;vertical-align:middle}
+.spinner-lg{width:52px;height:52px;border:3px solid rgba(239,68,68,.15);border-top-color:var(--pri);border-radius:50%;animation:spin .9s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-box{text-align:center;padding:50px 20px;color:var(--mut);font-size:12px;font-weight:600}
+.loading-box .spinner-lg{margin-bottom:16px}
+#loadingOverlay{position:fixed;inset:0;background:rgba(3,3,5,.98);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#loginPage{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 50% -10%,#1a0508 0%,#030305 70%);overflow-y:auto}
+.login-card{background:linear-gradient(145deg,#0d0d13 0%,#080810 100%);border:1px solid var(--line);border-radius:28px;padding:38px 30px;width:100%;max-width:430px;margin:auto;box-shadow:0 25px 80px rgba(0,0,0,.9)}
+.login-header{text-align:center;margin-bottom:26px;display:flex;flex-direction:column;align-items:center}
+.logo-container{width:78px;height:78px;background:linear-gradient(145deg,#15151d,#08080d);border:1px solid rgba(239,68,68,.35);border-radius:22px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;padding:13px}
+.logo-container img{width:100%;height:100%;object-fit:contain}
+.login-title{font-size:24px;font-weight:900;color:#fff;margin-bottom:5px;background:linear-gradient(135deg,#fff 0%,#a1a1aa 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.login-subtitle{font-size:11.5px;color:var(--mut);font-weight:600}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:10.5px;color:#71717a;margin-bottom:7px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+input,select,textarea{width:100%;background:linear-gradient(145deg,#0a0a10,#07070c);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:13px 15px;color:#f8fafc;font-size:13px;outline:none;font-family:inherit;font-weight:500}
+input:focus,select:focus,textarea:focus{border-color:var(--pri);box-shadow:0 0 0 4px rgba(239,68,68,.12)}
+input::placeholder,textarea::placeholder{color:#52525b}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+select option{background:#0a0a12;color:#fff;padding:10px}
+.btn{background:linear-gradient(135deg,#ef4444 0%,#dc2626 50%,#b91c1c 100%);color:#fff;border:none;padding:14px 20px;border-radius:12px;font-weight:800;width:100%;cursor:pointer;font-size:13px;box-shadow:0 6px 20px rgba(239,68,68,.25);transition:all .2s}
+.btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 28px rgba(239,68,68,.35)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.btn-green{background:linear-gradient(135deg,#22c55e,#16a34a)}
+.btn-red{background:linear-gradient(135deg,#dc2626,#991b1b)}
+.btn-wa{background:linear-gradient(135deg,#25d366,#128c7e)}
+.btn-tg{background:linear-gradient(135deg,#0088cc,#005f8e)}
+.btn-gold{background:linear-gradient(135deg,#fbbf24,#d97706);color:#111}
+.btn-sec{background:linear-gradient(145deg,#15151d,#0d0d13);color:#e4e4e7;border:1px solid rgba(255,255,255,.08)}
+.btn-gray{background:linear-gradient(135deg,#374151,#1f2937)}
+.btn-sm{padding:7px 12px;font-size:11px;width:auto;display:inline-flex;align-items:center;gap:5px;margin:2px;border-radius:9px}
+.err{background:linear-gradient(145deg,rgba(239,68,68,.12),rgba(239,68,68,.06));border:1px solid rgba(239,68,68,.3);color:#fca5a5;font-size:12px;text-align:center;padding:11px;border-radius:11px;margin-bottom:14px;display:none;font-weight:600}
+.err.ok{background:linear-gradient(145deg,rgba(34,197,94,.12),rgba(34,197,94,.06));border-color:rgba(34,197,94,.3);color:#4ade80}
+.switch-text{text-align:center;font-size:13px;color:var(--mut);margin-top:20px}
+.switch-text b{color:var(--gold);cursor:pointer;font-weight:800}
+#appPage{display:none;min-height:100vh}
+#appPage.show{display:flex}
+sidebar{width:var(--sbw);background:linear-gradient(180deg,#0a0a10 0%,#050507 100%);border-right:1px solid var(--line);position:fixed;top:0;bottom:0;left:-290px;z-index:100;display:flex;flex-direction:column;transition:left .3s ease;overflow-y:auto}
+sidebar.show{left:0}
+sidebar::-webkit-scrollbar{width:5px}
+sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.profile-sidebar{padding:22px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(239,68,68,.05),transparent);display:flex;align-items:center;gap:13px}
+.profile-avatar{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--pri);background:#111}
+.profile-info{overflow:hidden;flex:1}
+.profile-name{font-size:13px;font-weight:800;color:#fff}
+.profile-detail{font-size:11px;color:var(--mut);margin-top:3px;font-weight:600}
+.badge-reseller{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;font-size:9px;font-weight:900;border-radius:6px;margin-top:5px;background:linear-gradient(135deg,#fbbf24,#d97706);color:#111;text-transform:uppercase}
+.badge-member{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;font-size:9px;font-weight:700;border-radius:6px;margin-top:5px;background:rgba(255,255,255,.06);color:var(--mut);text-transform:uppercase}
+.sidebar-menu{padding:14px 12px;flex:1;display:flex;flex-direction:column;gap:3px}
+.menu-item{display:flex;align-items:center;gap:11px;padding:12px 14px;color:var(--mut);font-size:13px;border-radius:11px;cursor:pointer;font-weight:600;transition:all .18s;border:1px solid transparent}
+.menu-item:hover,.menu-item.active{background:linear-gradient(145deg,rgba(239,68,68,.14),rgba(239,68,68,.05));color:var(--pri);border-color:rgba(239,68,68,.15)}
+.menu-item .mi-icon{font-size:15px;width:22px;text-align:center}
+.menu-item.channel-wa:hover{background:linear-gradient(145deg,rgba(37,211,102,.14),rgba(37,211,102,.05));color:var(--wa);border-color:rgba(37,211,102,.15)}
+.menu-item.channel-tg:hover{background:linear-gradient(145deg,rgba(0,136,204,.14),rgba(0,136,204,.05));color:var(--tg);border-color:rgba(0,136,204,.15)}
+.main-content{flex:1;margin-left:0;display:flex;flex-direction:column;width:100%}
+@media(min-width:768px){sidebar{left:0}.main-content{margin-left:var(--sbw)}}
+.dash-nav{background:linear-gradient(180deg,rgba(8,8,14,.95),rgba(8,8,14,.85));backdrop-filter:blur(20px);border-bottom:1px solid var(--line);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:90}
+.menu-btn{background:linear-gradient(145deg,#15151d,#0d0d13);color:#fff;border:1px solid rgba(255,255,255,.08);width:40px;height:40px;border-radius:11px;cursor:pointer;font-size:18px}
+.logout-btn{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff;border:none;padding:8px 14px;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer}
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:95;display:none}
+#overlay.show{display:block}
+main{padding:22px;max-width:920px;width:100%;margin:0 auto}
+.title{font-size:22px;font-weight:900;margin-bottom:5px;background:linear-gradient(135deg,#fff 0%,#a1a1aa 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:12px;color:var(--mut);margin-bottom:20px;font-weight:500}
+.card-glass{background:linear-gradient(145deg,#0d0d13 0%,#08080e 100%);border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.price-box{text-align:center;padding:15px;border:1px dashed rgba(239,68,68,.35);border-radius:14px;margin-bottom:14px;background:linear-gradient(145deg,rgba(239,68,68,.05),rgba(239,68,68,.02))}
+.price-box .l{font-size:10px;color:var(--mut);font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+.price-box .v{font-size:26px;font-weight:900;color:var(--pri);margin-top:5px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-bottom:18px}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat-card{background:linear-gradient(145deg,#0d0d13,#08080e);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.stat-card .n{font-size:19px;font-weight:900;color:var(--pri)}
+.stat-card .t{font-size:10px;color:var(--mut);margin-top:4px;font-weight:800;letter-spacing:.8px}
+.ord-item,.usr-item{background:linear-gradient(145deg,#0c0c12,#08080e);border:1px solid rgba(239,68,68,.14);border-radius:14px;padding:14px;margin-bottom:11px;font-size:12px}
+.ord-row{display:flex;justify-content:space-between;margin-bottom:6px;gap:8px;align-items:flex-start}
+.ord-row span:first-child{color:var(--mut);font-weight:500}
+.ord-row span:last-child,.ord-row strong:last-child{text-align:right;word-break:break-word;color:#fff;font-weight:700}
+.badge{display:inline-block;padding:3px 9px;border-radius:7px;font-size:10px;font-weight:800}
+.b-pending{background:linear-gradient(135deg,#78350f,#451a03);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+.b-done{background:linear-gradient(135deg,#14532d,#052e16);color:#4ade80;border:1px solid rgba(74,222,128,.2)}
+.b-cancel{background:linear-gradient(135deg,#7f1d1d,#450a0a);color:#f87171;border:1px solid rgba(248,113,113,.2)}
+.badge-role{display:inline-block;padding:2px 9px;font-size:10px;font-weight:900;border-radius:6px;text-transform:uppercase}
+.role-admin{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
+.role-reseller{background:linear-gradient(135deg,#fbbf24,#d97706);color:#111}
+.role-user{background:rgba(255,255,255,.06);color:var(--mut)}
+.badge-sold{display:inline-block;padding:2px 8px;font-size:9px;font-weight:900;border-radius:6px;background:linear-gradient(135deg,#ef4444,#7f1d1d);color:#fff}
+.badge-new{display:inline-block;padding:2px 7px;font-size:9px;font-weight:900;border-radius:5px;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;letter-spacing:.5px}
+.badge-hot{display:inline-block;padding:2px 7px;font-size:9px;font-weight:900;border-radius:5px;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;letter-spacing:.5px}
+.empty{text-align:center;color:var(--mut);padding:35px 20px;font-size:12px}
+footer{text-align:center;font-size:11px;color:#52525b;padding:20px}
+.sync-indicator{font-size:10px;padding:5px 11px;border-radius:8px;background:linear-gradient(145deg,rgba(34,197,94,.12),rgba(34,197,94,.05));color:var(--ok);font-weight:800;display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;border:1px solid rgba(34,197,94,.2)}
+.search-box{position:relative;margin-bottom:16px}
+.search-box input{padding-left:40px}
+.search-box .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#52525b;font-size:14px}
+
+/* ============================================================
+   POSTER SLIDER
+   ============================================================ */
+.poster-slider{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  margin-bottom:18px;
+  background:linear-gradient(145deg,#0d0d13,#08080e);
+  border:1px solid rgba(239,68,68,.2);
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
+  aspect-ratio:16/9;
+  max-height:280px;
+}
+.poster-slider-inner{
+  display:flex;
+  height:100%;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+}
+.poster-slide{
+  min-width:100%;
+  height:100%;
+  position:relative;
+  cursor:pointer;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.poster-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.poster-slide::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%);
+  pointer-events:none;
+}
+.poster-slide-empty{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--mut);
+  font-size:12px;
+  font-weight:600;
+  height:100%;
+  background:linear-gradient(145deg,#0d0d13,#08080e);
+}
+.poster-dots{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:6px;
+  z-index:5;
+  background:rgba(0,0,0,.5);
+  padding:5px 10px;
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+}
+.poster-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:rgba(255,255,255,.35);
+  cursor:pointer;
+  transition:all .25s;
+  border:none;
+  padding:0;
+}
+.poster-dot.active{
+  background:#fff;
+  width:20px;
+  border-radius:20px;
+}
+.poster-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(0,0,0,.5);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s;
+  opacity:0;
+}
+.poster-slider:hover .poster-arrow{opacity:1}
+.poster-arrow:hover{background:rgba(239,68,68,.8);border-color:rgba(239,68,68,.6)}
+.poster-arrow.prev{left:10px}
+.poster-arrow.next{right:10px}
+@media(max-width:600px){
+  .poster-arrow{opacity:1;width:32px;height:32px;font-size:14px}
+}
+
+/* ============================================================
+   POSTER LIST (USER PAGE)
+   ============================================================ */
+.poster-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+@media(min-width:600px){.poster-grid{grid-template-columns:repeat(3,1fr)}}
+.poster-thumb{
+  border-radius:14px;
+  overflow:hidden;
+  background:linear-gradient(145deg,#0d0d13,#08080e);
+  border:1px solid rgba(239,68,68,.15);
+  aspect-ratio:16/9;
+  cursor:pointer;
+  transition:all .25s;
+  position:relative;
+}
+.poster-thumb:hover{
+  border-color:var(--pri);
+  transform:translateY(-3px);
+  box-shadow:0 12px 35px rgba(239,68,68,.25);
+}
+.poster-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* ============================================================
+   ADMIN POSTER EDITOR
+   ============================================================ */
+.poster-admin-item{
+  background:linear-gradient(145deg,#0c0c12,#08080e);
+  border:1px solid rgba(239,68,68,.15);
+  border-radius:14px;
+  padding:12px;
+  margin-bottom:10px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.poster-admin-item .pv{
+  width:120px;
+  height:70px;
+  border-radius:10px;
+  overflow:hidden;
+  background:rgba(0,0,0,.3);
+  flex-shrink:0;
+  border:1px solid rgba(255,255,255,.05);
+}
+.poster-admin-item .pv img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.poster-admin-item .pv.empty{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--mut);
+  font-size:20px;
+}
+.poster-admin-item .pi{
+  flex:1;
+  min-width:150px;
+}
+.poster-admin-item .pi input{
+  font-size:11.5px;
+  padding:8px 11px;
+  margin-bottom:5px;
+}
+.poster-admin-item .pa{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+}
+
+/* ============================================================
+   PREMIUM GRID
+   ============================================================ */
+.premium-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+@media(min-width:600px){.premium-grid{grid-template-columns:repeat(3,1fr)}}
+.premium-card{
+  background:linear-gradient(145deg,#0d0d13 0%,#08080e 100%);
+  border:1px solid rgba(239,68,68,.14);border-radius:18px;
+  padding:18px 14px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;cursor:pointer;min-height:235px;
+  justify-content:space-between;position:relative;transition:all .25s;overflow:hidden;
+}
+.premium-card:hover{border-color:var(--pri);transform:translateY(-4px);box-shadow:0 15px 45px rgba(239,68,68,.2)}
+.premium-card.sold-out{opacity:.45;cursor:not-allowed;filter:grayscale(.5)}
+.premium-card.sold-out:hover{transform:none}
+.premium-card .sold-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ef4444,#7f1d1d);color:#fff;padding:3px 10px;border-radius:8px;font-size:9px;font-weight:900;letter-spacing:1px}
+.premium-card .tag-new,.premium-card .tag-hot{position:absolute;top:10px;left:10px;padding:3px 8px;border-radius:6px;font-size:8px;font-weight:900;letter-spacing:.8px}
+.premium-card .tag-new{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff}
+.premium-card .tag-hot{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
+.premium-card .premium-logo{width:70px;height:70px;object-fit:contain;border-radius:16px;margin-bottom:14px;background:linear-gradient(145deg,rgba(0,0,0,.4),rgba(0,0,0,.2));padding:10px}
+.premium-card .premium-emoji{width:70px;height:70px;display:flex;align-items:center;justify-content:center;font-size:38px;margin-bottom:14px;background:linear-gradient(145deg,rgba(239,68,68,.12),rgba(239,68,68,.04));border-radius:16px;border:1px solid rgba(239,68,68,.15)}
+.premium-card .premium-name{font-size:13px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.3}
+.premium-card .premium-price{font-size:11px;color:var(--pri);font-weight:900;margin-bottom:12px}
+.premium-card .premium-btn{background:linear-gradient(135deg,#d4a574,#b8895c 100%);color:#fff;border:none;padding:9px 16px;border-radius:20px;font-size:10.5px;font-weight:900;cursor:pointer;width:100%}
+.premium-card.sold-out .premium-btn{background:linear-gradient(135deg,#374151,#1f2937);cursor:not-allowed}
+
+/* SOSMED */
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+@media(min-width:600px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
+.cat-btn{background:linear-gradient(145deg,#1a1a2e,#0f0f1a);border:1px solid rgba(239,68,68,.3);border-radius:14px;padding:16px;cursor:pointer;text-align:center;color:#fff;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:130px;transition:all .2s}
+.cat-btn:hover{border-color:var(--pri);transform:translateY(-3px);box-shadow:0 10px 30px rgba(239,68,68,.2)}
+.cat-btn .logo-img{width:52px;height:52px;object-fit:contain;margin-bottom:10px}
+.cat-btn .icon{font-size:32px;margin-bottom:8px}
+.cat-btn .name{font-size:12px;line-height:1.3}
+
+/* NOKOS */
+.nokos-steps{display:flex;align-items:center;gap:6px;margin-bottom:16px;padding:10px;background:rgba(0,0,0,.3);border-radius:12px;overflow-x:auto}
+.step-dot{display:flex;align-items:center;gap:5px;flex-shrink:0;font-size:10.5px;font-weight:700;color:var(--mut)}
+.step-dot .num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--mut)}
+.step-dot.active .num{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
+.step-dot.active{color:#fff}
+.step-dot.done .num{background:#16a34a;color:#fff}
+.step-arrow{color:var(--mut);font-size:11px}
+.wn-service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-bottom:14px;max-height:340px;overflow-y:auto;padding:4px}
+.wn-service-btn{background:linear-gradient(145deg,#1a1a2e,#0f0f1a);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:12px 8px;cursor:pointer;text-align:center;color:#fff;font-weight:700;font-size:10.5px;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:90px;justify-content:center}
+.wn-service-btn:hover{border-color:var(--pri);background:rgba(239,68,68,.1)}
+.wn-service-btn.active{background:linear-gradient(135deg,#ef4444,#b91c1c);border-color:#ef4444}
+.wn-service-btn img{width:36px;height:36px;object-fit:contain}
+.wn-service-btn .ico-fallback{font-size:24px}
+.wn-country-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-bottom:14px;max-height:340px;overflow-y:auto;padding:4px}
+.wn-country-btn{background:linear-gradient(145deg,#1a1a2e,#0f0f1a);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:12px 6px;cursor:pointer;text-align:center;color:#fff;font-weight:700;font-size:11px;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.wn-country-btn:hover{border-color:var(--pri);background:rgba(239,68,68,.1)}
+.wn-country-btn.active{background:linear-gradient(135deg,#ef4444,#b91c1c);border-color:#ef4444}
+.wn-country-btn .flag{font-size:24px}
+.wn-status-badge{display:inline-block;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase}
+.wn-waiting{background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3)}
+.wn-otp{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+.wn-cancelled{background:rgba(248,113,113,.15);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+.step-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.step-header h3{font-size:14px;color:#fff;font-weight:800}
+.step-header .count{font-size:10px;color:var(--mut);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px;font-weight:700}
+.otp-display{background:linear-gradient(145deg,#1a1a2e,#0f0f1a);border:2px dashed var(--pri);border-radius:16px;padding:22px 20px;text-align:center;margin-bottom:14px}
+.otp-display .lbl{font-size:11px;color:var(--mut);font-weight:700;letter-spacing:1px;margin-bottom:8px;text-transform:uppercase}
+.otp-display .num{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:12px;word-break:break-all}
+.otp-display .otp{font-size:42px;font-weight:900;color:#4ade80;letter-spacing:6px;margin:8px 0}
+.wn-product{background:linear-gradient(145deg,#0a0a12,#0f0f18);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer;transition:all .2s}
+.wn-product:hover{border-color:var(--pri);transform:translateX(3px)}
+.wn-product .info{flex:1;min-width:0}
+.wn-product .nm{font-size:13px;font-weight:800;color:#fff;margin-bottom:5px}
+.wn-product .meta{font-size:10px;color:var(--mut)}
+.wn-product .stock-ok{color:#4ade80;font-weight:700}
+.wn-product .stock-low{color:#fbbf24;font-weight:700}
+.wn-product .stock-empty{color:#f87171;font-weight:700}
+.wn-product .harga{text-align:right;flex-shrink:0}
+.wn-product .harga .p{font-size:15px;font-weight:900;color:var(--pri)}
+.wn-product .harga .m{font-size:9px;color:var(--mut);text-decoration:line-through;margin-top:2px}
+.wn-product.disabled{opacity:.4;cursor:not-allowed}
+.wn-depo-card{background:linear-gradient(145deg,#1a1a2e,#0f0f1a);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:16px;margin-bottom:14px}
+.wn-depo-card h4{font-size:13px;color:#fff;margin-bottom:10px}
+.wn-depo-quick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.wn-depo-quick button{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#fff;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer}
+.wn-depo-quick button:hover{background:rgba(239,68,68,.2);border-color:var(--pri)}
+.balance-card{background:linear-gradient(135deg,#0a1a0f,#051a0a);border:1px solid rgba(34,197,94,.4);border-radius:14px;padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+
+/* CHAT */
+.chat-box-container{display:flex;flex-direction:column;height:450px;background:linear-gradient(180deg,#08080e,#0a0a12);border:1px solid rgba(239,68,68,.2);border-radius:18px;overflow:hidden}
+.chat-messages{flex:1;padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.chat-bubble{max-width:80%;padding:11px 15px;font-size:12.5px;line-height:1.55;word-break:break-word;font-weight:500}
+.chat-bubble.user{background:linear-gradient(145deg,#1a1a24,#0f0f18);color:#f8fafc;align-self:flex-start;border-radius:18px 18px 18px 5px;border:1px solid rgba(239,68,68,.35)}
+.chat-bubble.admin{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;align-self:flex-end;border-radius:18px 18px 5px 18px}
+.chat-bubble .meta{font-size:9px;opacity:.85;margin-bottom:3px;font-weight:900;text-transform:uppercase}
+.chat-input-area{display:flex;padding:12px;background:#08080e;border-top:1px solid rgba(239,68,68,.15);gap:10px;align-items:center}
+.chat-input-area input{flex:1;margin:0;background:#0a0a10;border:1px solid rgba(239,68,68,.2);border-radius:24px;padding:11px 18px;font-size:12.5px}
+.chat-input-area button{border-radius:50%!important;width:44px!important;height:44px!important;padding:0!important;flex-shrink:0;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:16px;border:none;cursor:pointer}
+.chat-user-list-item{padding:12px;background:linear-gradient(145deg,#0c0c12,#08080e);border:1px solid rgba(239,68,68,.14);border-radius:12px;margin-bottom:8px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+
+#toastWrap{position:fixed;top:20px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;max-width:350px;pointer-events:none}
+.toast{padding:14px 18px;border-radius:12px;font-size:12.5px;font-weight:700;color:#fff;box-shadow:0 15px 45px rgba(0,0,0,.5);animation:toastIn .35s ease;pointer-events:auto;display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.1)}
+.toast.ok{background:linear-gradient(135deg,rgba(22,163,74,.95),rgba(21,128,61,.95))}
+.toast.err{background:linear-gradient(135deg,rgba(220,38,38,.95),rgba(153,27,27,.95))}
+.toast.info{background:linear-gradient(135deg,rgba(2,132,199,.95),rgba(3,105,161,.95))}
+.toast.warn{background:linear-gradient(135deg,rgba(217,119,6,.95),rgba(180,83,9,.95))}
+@keyframes toastIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+.copy-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#a1a1aa;border-radius:7px;padding:3px 9px;font-size:10px;cursor:pointer;margin-left:6px;font-weight:800}
+.copy-btn:hover{background:rgba(239,68,68,.2);color:#ef4444}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.94);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.modal{background:linear-gradient(145deg,#0d0d13,#08080e);border:1px solid rgba(239,68,68,.3);border-radius:20px;padding:26px;max-width:430px;width:100%;text-align:center;margin:auto}
+.modal img{width:240px;height:240px;background:#fff;padding:10px;border-radius:14px;margin:16px auto;display:block}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+.status-dot.on{background:#22c55e}
+.status-dot.off{background:#f87171}
+.total-saldo-banner{background:linear-gradient(135deg,#7c3aed 0%,#a855f7 100%);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px}
+.total-saldo-banner .l{font-size:10px;color:rgba(255,255,255,.85);font-weight:800;letter-spacing:1px}
+.total-saldo-banner .v{font-size:24px;font-weight:900;color:#fff;margin-top:5px}
+.notif-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font-size:10px;font-weight:800;border-radius:7px;margin-right:5px;border:1px solid}
+.nb-wa{background:rgba(37,211,102,.12);color:var(--wa);border-color:rgba(37,211,102,.3)}
+.nb-tg{background:rgba(0,136,204,.12);color:var(--tg);border-color:rgba(0,136,204,.3)}
+.mini-btn{padding:5px 10px;font-size:10.5px;border-radius:7px;border:none;cursor:pointer;font-weight:800}
+.mini-btn.edit{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff}
+.mini-btn.del{background:linear-gradient(135deg,#dc2626,#991b1b);color:#fff}
+.mini-btn.up{background:linear-gradient(135deg,#64748b,#475569);color:#fff}
+.mini-btn.down{background:linear-gradient(135deg,#64748b,#475569);color:#fff}
+.akun-result{background:linear-gradient(135deg,rgba(22,163,74,.15),rgba(22,163,74,.05));border:2px solid #16a34a;border-radius:14px;padding:18px;margin:14px 0}
+.akun-result .hd{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.akun-result .hd .ic{font-size:22px}
+.akun-result .hd .tt{font-size:13px;font-weight:900;color:#4ade80;letter-spacing:.5px}
+.akun-result .row{background:rgba(0,0,0,.5);border:1px solid rgba(22,163,74,.25);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.akun-result .row .lb{font-size:9px;color:#86efac;font-weight:900;letter-spacing:1px;margin-bottom:6px;text-transform:uppercase}
+.akun-result .row .vl{display:flex;align-items:center;gap:8px}
+.akun-result .row .vl .tx{flex:1;font-size:14px;color:#fff;font-weight:700;word-break:break-all;font-family:'Courier New',monospace}
+.akun-result .row .vl .cp{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:10px;font-weight:900;cursor:pointer}
+.kirim-form{background:linear-gradient(145deg,#0a1a0f,#051a0a);border:1px solid rgba(34,197,94,.35);border-radius:12px;padding:14px;margin-top:10px}
+.kirim-form .fm-hd{font-size:11px;color:#4ade80;font-weight:900;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.kirim-form .fg{margin-bottom:10px}
+.kirim-form .fg label{color:#86efac;font-size:9.5px;letter-spacing:1px;margin-bottom:5px}
+.kirim-form input{background:rgba(0,0,0,.5);border:1px solid rgba(34,197,94,.25);font-size:12.5px;padding:10px 12px}
+.kirim-form input:focus{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type="number"]{-moz-appearance:textfield}
+</style>
+</head>
+<body>
+
+<div id="loadingOverlay"><div class="spinner"></div><div style="font-size:12px;color:var(--mut);font-weight:700;">Menghubungkan...</div></div>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="logo-container"><img src="https://cdn.phototourl.com/free/2026-09-16-76176509-db68-43e3-baba-4b1fe4f0393f.png" alt="Logo"></div>
+      <div class="login-title" id="pageTitle">Masuk ke Akun</div>
+      <div class="login-subtitle" id="pageSubtitle">Digital Panel Bieberpedia</div>
+    </div>
+    <div class="err" id="loginErr"></div>
+    <div class="err ok" id="registerOk"></div>
+    <div id="loginForm">
+      <form onsubmit="event.preventDefault(); handleAuth();">
+        <div class="form-group"><label>Username</label><input type="text" id="loginUser" placeholder="Username" required></div>
+        <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Password" required></div>
+        <button type="submit" class="btn" id="btnLogin">🚀 MASUK SEKARANG</button>
+      </form>
+      <div class="switch-text">Belum punya akun? <b onclick="showRegister()">Daftar</b></div>
+    </div>
+    <div id="registerForm" class="hide">
+      <div class="err" id="registerErr"></div>
+      <form onsubmit="event.preventDefault(); handleRegister();">
+        <div class="form-group"><label>Username</label><input type="text" id="regUser" placeholder="Min 3 karakter" required></div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="regFullName" placeholder="Nama kamu" required></div>
+        <div class="form-group"><label>No WhatsApp</label><input type="text" id="regPhone" placeholder="628xxxxxxxxx" required></div>
+        <div class="form-group"><label>Email (opsional)</label><input type="email" id="regEmail" placeholder="email@example.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="regPass" placeholder="Min 6 karakter" required></div>
+        <div class="form-group"><label>Konfirmasi Password</label><input type="password" id="regPassConfirm" placeholder="Ulangi password" required></div>
+        <button type="submit" class="btn" id="btnRegister">✅ DAFTAR SEKARANG</button>
+      </form>
+      <div class="switch-text">Sudah punya akun? <b onclick="showLogin()">Masuk</b></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appPage">
+  <div id="toastWrap"></div>
+  <div id="overlay" onclick="closeDrawer()"></div>
+  <sidebar id="drawer">
+    <div class="profile-sidebar">
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" class="profile-avatar" id="drawerAvatar" alt="Avatar">
+      <div class="profile-info">
+        <div class="profile-name" id="drawerName">Username</div>
+        <div class="profile-detail" id="drawerDetail">Saldo: Rp 0</div>
+        <div id="drawerBadgeContainer"></div>
+      </div>
+    </div>
+    <div class="sidebar-menu">
+      <div class="menu-item active" onclick="goTab('premium')"><span class="mi-icon">💎</span> Aplikasi Premium</div>
+      <div class="menu-item" onclick="goTab('sosmed')"><span class="mi-icon">📱</span> All Sosmed</div>
+      <div class="menu-item" onclick="goTab('nokos')"><span class="mi-icon">📞</span> Nokos (OTP)</div>
+      <div class="menu-item" onclick="goTab('deposit')"><span class="mi-icon">💳</span> Deposit Saldo</div>
+      <div class="menu-item" onclick="goTab('galeri')"><span class="mi-icon">🖼️</span> Galeri Poster</div>
+      <div class="menu-item" onclick="goTab('livechat')"><span class="mi-icon">💬</span> Live Chat</div>
+      <div class="menu-item" onclick="goTab('profile')"><span class="mi-icon">👤</span> Edit Profil</div>
+      <div class="menu-item" onclick="goTab('riwayat')"><span class="mi-icon">📋</span> Riwayat Order</div>
+      <div class="menu-item" onclick="goTab('riwayat-deposit')"><span class="mi-icon">🧾</span> Riwayat Deposit</div>
+      <div id="adminMenuSection" style="display:none;margin-top:10px;border-top:1px solid rgba(255,255,255,.05);padding-top:10px;">
+        <div style="font-size:9px;color:var(--mut);padding:4px 12px;font-weight:800;letter-spacing:1.5px;">MENU ADMIN</div>
+        <div class="menu-item" onclick="goTab('admin-chat')"><span class="mi-icon">🎧</span> Chat Masuk (<span id="unreadChatCount">0</span>)</div>
+        <div class="menu-item" onclick="goTab('admin')"><span class="mi-icon">📦</span> Kontrol Order</div>
+        <div class="menu-item" onclick="goTab('admin-products')"><span class="mi-icon">🛠️</span> Kelola APK Premium</div>
+        <div class="menu-item" onclick="goTab('admin-poster')"><span class="mi-icon">🖼️</span> Kelola Poster</div>
+        <div class="menu-item" onclick="goTab('admin-nokos')"><span class="mi-icon">📲</span> Kontrol Nokos</div>
+        <div class="menu-item" onclick="goTab('admin-deposit')"><span class="mi-icon">💰</span> Kontrol Deposit</div>
+        <div class="menu-item" onclick="goTab('users')"><span class="mi-icon">👥</span> Kelola User</div>
+        <div class="menu-item" onclick="goTab('statistik')"><span class="mi-icon">📊</span> Statistik</div>
+        <div class="menu-item" onclick="goTab('cek-saldo')"><span class="mi-icon">💳</span> Saldo Fayupedia</div>
+        <div class="menu-item" onclick="goTab('notif-setting')"><span class="mi-icon">🔔</span> Test Notifikasi</div>
+        <div class="menu-item" onclick="exportBackup()"><span class="mi-icon">💾</span> Backup Data</div>
+      </div>
+      <div style="margin-top:auto;padding-top:10px;border-top:1px solid rgba(255,255,255,.05);">
+        <div class="menu-item channel-wa" onclick="window.open('https://whatsapp.com/channel/0029VbDNXD83AzNIfttSMk46','_blank')"><span class="mi-icon">💬</span> Join Saluran WA</div>
+        <div class="menu-item channel-tg" onclick="window.open('https://t.me/fifanel','_blank')"><span class="mi-icon">✈️</span> Join Saluran Telegram</div>
+      </div>
+    </div>
+  </sidebar>
+
+  <div class="main-content">
+    <div class="dash-nav">
+      <button class="menu-btn" onclick="openDrawer()">☰</button>
+      <div style="font-weight:900;font-size:14px;color:#fff;">BIEBERPEDIA<span style="color:var(--pri)">.ID</span></div>
+      <button class="logout-btn" onclick="logout()">Keluar</button>
+    </div>
+    <main>
+      <div class="sync-indicator">⚡ <span id="syncStatus">Real-time</span></div>
+
+      <!-- POSTER SLIDER (tampil di semua halaman user) -->
+      <div id="posterSliderWrap"></div>
+
+      <!-- PREMIUM -->
+      <section id="sec-premium">
+        <div class="title">💎 Aplikasi Premium</div>
+        <div class="sub">Beli akun premium — admin kirim ke email kamu</div>
+        <div class="search-box"><span class="ico">🔍</span><input type="text" id="search-premium" placeholder="Cari aplikasi..." oninput="filterPremiumApps()"></div>
+        <div class="premium-grid" id="premiumGrid"></div>
+        <div id="premiumFormArea" class="hide">
+          <div class="card-glass">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3 style="font-size:14px;color:var(--pri);font-weight:900;" id="activePremiumTitle">-</h3>
+              <button class="btn btn-sm btn-sec" onclick="backToPremiumGrid()">← Kembali</button>
+            </div>
+            <div class="form-group"><label>Pilih Paket</label><select id="sel-premium" onchange="updatePremiumPrice()"><option value="">-- Pilih Paket --</option></select></div>
+            <div class="form-group"><label>Jumlah</label><input type="number" id="qty-premium" value="1" min="1" oninput="updatePremiumPrice()"></div>
+            <div class="form-group"><label>📧 Email Penerima</label><input type="email" id="target-premium" placeholder="email@kamu.com"></div>
+            <div class="form-group"><label>📱 No WhatsApp (opsional)</label><input type="text" id="phone-premium" placeholder="628xxxxxxxxx"></div>
+            <div style="background:linear-gradient(145deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid rgba(34,197,94,.2);border-radius:11px;padding:11px;font-size:11px;color:#86efac;margin-bottom:14px;line-height:1.6;">
+              ℹ️ Akun akan dikirim oleh admin ke email & WA kamu setelah pembayaran.
+            </div>
+            <div class="price-box"><div class="l">TOTAL</div><div class="v" id="prc-premium">Rp 0</div></div>
+            <button class="btn" onclick="checkoutPremiumOrder()" id="btnOrderPrem">🛒 Order Sekarang</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOSMED -->
+      <section id="sec-sosmed" class="hide">
+        <div class="title">📱 All Sosmed</div>
+        <div class="sub">Layanan realtime dari Fayupedia</div>
+        <div class="search-box"><span class="ico">🔍</span><input type="text" id="search-cat" placeholder="Cari kategori..." oninput="filterCategory()"></div>
+        <div class="cat-grid" id="catGrid"><div class="loading-box" style="grid-column:1/-1;"><div class="spinner-lg"></div><div>Memuat layanan...</div></div></div>
+        <div id="serviceFormArea" class="hide">
+          <div class="card-glass">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <h3 style="font-size:14px;color:var(--pri);font-weight:900;" id="activeCatTitle">-</h3>
+              <button class="btn btn-sm btn-sec" onclick="backToFayuCategories()">← Kembali</button>
+            </div>
+            <div class="search-box"><span class="ico">🔍</span><input type="text" id="search-svc" placeholder="Cari layanan..." oninput="filterServices()"></div>
+            <div class="form-group"><label>Pilih Layanan</label><select id="sel-sosmed" onchange="updateFayuPrice()"><option value="">-- Pilih Layanan --</option></select></div>
+            <div class="form-group"><label>Target</label><input type="text" id="target-sosmed" placeholder="@username atau link"></div>
+            <div class="form-group"><label>Jumlah</label><input type="number" id="qty-sosmed" placeholder="0" oninput="updateFayuPrice()"></div>
+            <div class="price-box"><div class="l">TOTAL BAYAR</div><div class="v" id="prc-sosmed">Rp 0</div></div>
+            <div style="font-size:10px;color:var(--mut);text-align:center;margin-bottom:10px;" id="minmax-info"></div>
+            <button class="btn" onclick="checkoutFayuOrder()" id="btnOrderSosmed">⚡ Order Sekarang</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOKOS -->
+      <section id="sec-nokos" class="hide">
+        <div class="title">📞 Nokos (Nomor Virtual)</div>
+        <div class="sub">Pilih nomor → tunggu admin proses → terima nomor & OTP</div>
+        <div class="nokos-steps">
+          <div class="step-dot active" id="stepDot1"><div class="num">1</div> Aplikasi</div>
+          <div class="step-arrow">→</div>
+          <div class="step-dot" id="stepDot2"><div class="num">2</div> Negara</div>
+          <div class="step-arrow">→</div>
+          <div class="step-dot" id="stepDot3"><div class="num">3</div> Server</div>
+        </div>
+        <div class="card-glass" id="nokosStep1">
+          <div class="step-header"><h3>📱 Pilih Aplikasi</h3><span class="count" id="wnServiceCount">-</span></div>
+          <div class="search-box"><span class="ico">🔍</span><input type="text" id="wn-search-svc" placeholder="Cari aplikasi..." oninput="filterWnServices()"></div>
+          <div class="wn-service-grid" id="wnServiceGrid"><div class="loading-box" style="grid-column:1/-1;"><div class="spinner-lg"></div><div>Memuat...</div></div></div>
+        </div>
+        <div class="card-glass hide" id="nokosStep2">
+          <div class="step-header"><h3>🌍 Pilih Negara</h3><span class="count" id="wnCountryCount">-</span></div>
+          <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">📱</span>
+            <span style="color:#fff;font-weight:700;" id="selectedServiceLabel">-</span>
+            <button class="btn btn-sm" style="background:#333;margin:0;margin-left:auto;padding:4px 10px;font-size:10px;" onclick="resetNokosFlow()">Ganti</button>
+          </div>
+          <div class="search-box"><span class="ico">🔍</span><input type="text" id="wn-search-country" placeholder="Cari negara..." oninput="filterWnCountries()"></div>
+          <div class="wn-country-grid" id="wnCountryGrid"></div>
+        </div>
+        <div class="card-glass hide" id="nokosStep3">
+          <div class="step-header"><h3>🖥️ Pilih Server</h3><span class="count" id="wnProductCount">-</span></div>
+          <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;">
+            <div style="margin-bottom:4px;"><span style="color:#94a3b8;">📱 Aplikasi:</span> <b style="color:#fff;" id="selectedServiceLabel2">-</b></div>
+            <div><span style="color:#94a3b8;">🌍 Negara:</span> <b style="color:#fff;" id="selectedCountryLabel">-</b></div>
+          </div>
+          <div id="wnProductList"><div class="loading-box"><div class="spinner-lg"></div><div>Memuat...</div></div></div>
+        </div>
+        <div class="card-glass hide" id="nokosActiveOrder">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h3 style="font-size:13px;color:var(--pri);margin:0;font-weight:900;">🎯 Status Order</h3>
+            <button class="btn btn-sm btn-sec" onclick="closeActiveNokos()">✕</button>
+          </div>
+          <div id="nokosActiveBox"></div>
+        </div>
+      </section>
+
+      <!-- DEPOSIT -->
+      <section id="sec-deposit" class="hide">
+        <div class="title">💳 Deposit Saldo</div>
+        <div class="sub">Otomatis masuk setelah bayar</div>
+        <div class="card-glass">
+          <div class="form-group"><label>Pilih Nominal</label><select id="sel-deposit" onchange="updateDepositPrice()"><option value="" data-price="0">-- Pilih Nominal --</option></select></div>
+          <div class="form-group"><label>Atau Ketik Manual (Rp)</label><input type="number" id="inp-deposit-manual" placeholder="Minimal 1.000" min="1000"></div>
+          <div class="price-box"><div class="l">TOTAL TAGIHAN</div><div class="v" id="prc-deposit">Rp 0</div></div>
+          <button class="btn" onclick="checkoutDeposit()" id="btnBuatQris">📱 Buat QRIS Otomatis</button>
+        </div>
+      </section>
+
+      <!-- GALERI POSTER -->
+      <section id="sec-galeri" class="hide">
+        <div class="title">🖼️ Galeri Poster</div>
+        <div class="sub">Lihat semua poster & promo kami</div>
+        <div class="poster-grid" id="galeriPosterGrid"></div>
+      </section>
+
+      <!-- LIVE CHAT -->
+      <section id="sec-livechat" class="hide">
+        <div class="title">Live Chat Admin</div>
+        <div class="sub">Tanya apa saja, admin siap bantu</div>
+        <div class="card-glass" style="padding:14px;">
+          <div class="chat-box-container">
+            <div class="chat-messages" id="userChatMessages"></div>
+            <div class="chat-input-area">
+              <input type="text" id="userChatInput" placeholder="Ketik pesan..." onkeydown="if(event.key==='Enter') sendUserChat()">
+              <button onclick="sendUserChat()">➤</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section id="sec-profile" class="hide">
+        <div class="title">Edit Profil</div>
+        <div class="card-glass">
+          <div class="form-group"><label>Username</label><input type="text" id="editProfileUser" disabled></div>
+          <div class="form-group"><label>Nama Lengkap</label><input type="text" id="editProfileName"></div>
+          <div class="form-group"><label>No WA</label><input type="text" id="editProfilePhone"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="editProfileEmail"></div>
+          <div class="form-group"><label>Umur</label><input type="number" id="editProfileAge"></div>
+          <div class="form-group"><label>Foto URL</label><input type="text" id="editProfileAvatar"></div>
+          <button class="btn btn-green" onclick="saveMyProfile()">💾 Simpan</button>
+        </div>
+      </section>
+
+      <section id="sec-riwayat" class="hide"><div class="title">Riwayat Order</div><div class="sub">Semua pembelian kamu</div><div id="riwayatContainer"></div></section>
+      <section id="sec-riwayat-deposit" class="hide"><div class="title">Riwayat Deposit</div><div id="riwayatDepositContainer"></div></section>
+
+      <!-- STATISTIK -->
+      <section id="sec-statistik" class="hide">
+        <div class="title">📊 Statistik</div>
+        <div class="stats">
+          <div class="stat-card"><div class="n" id="stOmzet">Rp 0</div><div class="t">OMZET</div></div>
+          <div class="stat-card"><div class="n" id="stOrder">0</div><div class="t">SUKSES</div></div>
+          <div class="stat-card"><div class="n" id="stPending">0</div><div class="t">PENDING</div></div>
+          <div class="stat-card"><div class="n" id="stUsers">0</div><div class="t">USER</div></div>
+        </div>
+      </section>
+
+      <!-- CEK SALDO FAYU -->
+      <section id="sec-cek-saldo" class="hide">
+        <div class="title">💳 Saldo Fayupedia</div>
+        <div class="card-glass">
+          <div style="text-align:center;padding:30px 0;">
+            <div style="font-size:13px;color:var(--mut);font-weight:700;letter-spacing:2px;">SALDO ANDA</div>
+            <div id="fayuBalanceText" style="font-size:42px;font-weight:900;color:var(--pri);margin:15px 0;">-</div>
+            <div id="fayuStatusText" style="font-size:12px;color:var(--mut);margin-top:10px;">-</div>
+          </div>
+          <button class="btn btn-blue" onclick="refreshFayuBalance()" id="btnRefreshFayu">🔄 Refresh</button>
+        </div>
+      </section>
+
+      <!-- NOTIF -->
+      <section id="sec-notif-setting" class="hide">
+        <div class="title">🔔 Test Notifikasi</div>
+        <div class="card-glass">
+          <div style="margin-bottom:14px;"><span class="notif-badge nb-wa">💬 WhatsApp</span><span class="notif-badge nb-tg">✈️ Telegram</span></div>
+          <button class="btn btn-tg" onclick="testTelegram()" id="btnTestTg">✈️ Test Telegram</button>
+          <button class="btn btn-wa" style="margin-top:10px;" onclick="testWA()" id="btnTestWa">💬 Test WhatsApp</button>
+        </div>
+      </section>
+
+      <!-- ADMIN: KELOLA POSTER -->
+      <section id="sec-admin-poster" class="hide">
+        <div class="title">🖼️ Kelola Poster</div>
+        <div class="sub">Tambah link foto poster untuk slider & galeri</div>
+        <div class="card-glass">
+          <h3 style="font-size:14px;margin-bottom:14px;color:var(--pri);font-weight:900;">➕ Tambah Poster Baru</h3>
+          <div class="form-group"><label>Link Foto / URL Gambar</label><input type="text" id="poster-url" placeholder="https://i.imgur.com/xxxxx.jpg"></div>
+          <div class="form-group"><label>Judul Poster (opsional)</label><input type="text" id="poster-title" placeholder="Contoh: Promo Netflix Diskon"></div>
+          <div class="form-group"><label>Link Tujuan (opsional)</label><input type="text" id="poster-link" placeholder="https://... (klik poster akan buka link ini)"></div>
+          <div style="background:linear-gradient(145deg,rgba(34,197,94,.08),rgba(34,197,94,.03));border:1px solid rgba(34,197,94,.2);border-radius:11px;padding:11px;font-size:11px;color:#86efac;margin-bottom:14px;line-height:1.6;">
+            💡 Upload foto dulu ke hosting gratis (imgur, imgbb, postimages, dll) lalu paste linknya di sini.
+          </div>
+          <button class="btn btn-green" onclick="addPoster()" id="btnAddPoster">➕ Tambah Poster</button>
+        </div>
+        <div class="card-glass">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h3 style="font-size:14px;color:var(--pri);font-weight:900;">📋 Daftar Poster (<span id="posterCount">0</span>)</h3>
+          </div>
+          <div id="adminPosterList"></div>
+        </div>
+      </section>
+
+      <!-- ADMIN: KELOLA APK -->
+      <section id="sec-admin-products" class="hide">
+        <div class="title">🛠️ Kelola APK Premium</div>
+        <div class="sub">Tambah / edit / hapus aplikasi & paket</div>
+        <div class="card-glass">
+          <h3 style="font-size:14px;margin-bottom:14px;color:var(--pri);font-weight:900;">➕ Tambah Aplikasi Baru</h3>
+          <div class="form-group"><label>Nama Aplikasi</label><input type="text" id="np-name" placeholder="Contoh: Netflix Premium"></div>
+          <div class="form-group"><label>Emoji Icon</label><input type="text" id="np-emoji" placeholder="🎬" maxlength="4"></div>
+          <div class="form-group"><label>Logo URL (opsional)</label><input type="text" id="np-logo" placeholder="https://..."></div>
+          <div class="form-group"><label>Tag (opsional)</label><select id="np-tag"><option value="">- Tanpa Tag -</option><option value="new">NEW</option><option value="hot">HOT</option></select></div>
+          <button class="btn btn-green" onclick="addPremiumApp()" id="btnAddProd">➕ Tambah Aplikasi</button>
+        </div>
+        <div class="card-glass">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h3 style="font-size:14px;color:var(--pri);font-weight:900;">📋 Daftar Aplikasi (<span id="prodCount">0</span>)</h3>
+          </div>
+          <div class="search-box"><span class="ico">🔍</span><input type="text" id="search-prod" placeholder="Cari aplikasi..." oninput="renderAdminProducts()"></div>
+          <div id="adminProductsList"></div>
+        </div>
+      </section>
+
+      <!-- ADMIN: KONTROL ORDER -->
+      <section id="sec-admin" class="hide">
+        <div class="title">📦 Kontrol Order Premium</div>
+        <div class="sub">Kirim akun (email + password) ke user</div>
+        <div class="stats">
+          <div class="stat-card"><div class="n" id="a-total">0</div><div class="t">TOTAL</div></div>
+          <div class="stat-card"><div class="n" id="a-pending">0</div><div class="t">PERLU KIRIM</div></div>
+          <div class="stat-card"><div class="n" id="a-done">0</div><div class="t">TERKIRIM</div></div>
+          <div class="stat-card"><div class="n" id="a-omzet">Rp 0</div><div class="t">OMZET</div></div>
+        </div>
+        <div class="card-glass">
+          <div class="form-group" style="margin-bottom:0;"><label>Cari Order</label><input type="text" id="searchOrder" placeholder="Cari ID / user / produk..." oninput="renderAdminOrders()"></div>
+        </div>
+        <div id="adminOrdersContainer"></div>
+      </section>
+
+      <!-- ADMIN: NOKOS -->
+      <section id="sec-admin-nokos" class="hide">
+        <div class="title">📲 Kontrol Nokos</div>
+        <div class="sub">Kelola order nokos & deposit WN</div>
+        <div class="balance-card">
+          <div>
+            <div style="font-size:10px;color:#94a3b8;font-weight:700;letter-spacing:1px;">💰 SALDO WARUNG NOKOS</div>
+            <div id="wnBalanceText" style="font-size:22px;font-weight:900;color:#4ade80;margin-top:4px;">-</div>
+            <div id="wnBalanceStatus" style="font-size:10px;color:#94a3b8;margin-top:2px;">Tekan Refresh</div>
+          </div>
+          <button class="btn btn-sm btn-green" style="margin:0;" id="btnRefreshWn" onclick="refreshWnBalance()">🔄 Refresh</button>
+        </div>
+        <div class="wn-depo-card">
+          <h4>💳 Deposit Saldo WN</h4>
+          <div class="wn-depo-quick">
+            <button onclick="setWnDepoAmount(20000)">Rp 20rb</button>
+            <button onclick="setWnDepoAmount(50000)">Rp 50rb</button>
+            <button onclick="setWnDepoAmount(100000)">Rp 100rb</button>
+            <button onclick="setWnDepoAmount(250000)">Rp 250rb</button>
+            <button onclick="setWnDepoAmount(500000)">Rp 500rb</button>
+          </div>
+          <div class="form-group"><label>Jumlah (Rp)</label><input type="number" id="wn-depo-amount" style="font-size:20px;text-align:center;font-weight:800;color:var(--pri);" placeholder="20000" min="2000"></div>
+          <button class="btn btn-green" id="btnWnDepo" onclick="createWnDeposit()">📱 Buat Tagihan WN</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-size:14px;font-weight:800;color:#fff;">🎯 Order Nokos</div>
+          <span style="font-size:10px;color:var(--mut);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:20px;font-weight:700;" id="adminNokosCount">-</span>
+        </div>
+        <div id="adminNokosContainer"></div>
+      </section>
+
+      <section id="sec-admin-deposit" class="hide"><div class="title">💰 Kontrol Deposit</div><div id="adminDepositContainer"></div></section>
+
+      <!-- ADMIN CHAT -->
+      <section id="sec-admin-chat" class="hide">
+        <div class="title">🎧 Live Chat Admin</div>
+        <div class="card-glass"><div id="adminChatUserList"></div></div>
+        <div class="card-glass" id="adminActiveChatBox" style="display:none;">
+          <h3 style="font-size:13px;margin-bottom:12px;font-weight:900;" id="activeChatTitle">-</h3>
+          <div class="chat-box-container" style="height:380px;">
+            <div class="chat-messages" id="adminChatMessages"></div>
+            <div class="chat-input-area"><input type="text" id="adminChatInput" placeholder="Balas..." onkeydown="if(event.key==='Enter') sendAdminChat()"><button onclick="sendAdminChat()">➤</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="sec-users" class="hide">
+        <div class="title">👥 Kelola User</div>
+        <div class="card-glass">
+          <h3 style="font-size:14px;margin-bottom:14px;color:var(--pri);font-weight:900;">➕ Tambah User</h3>
+          <div class="form-group"><label>Username</label><input type="text" id="newUsrName"></div>
+          <div class="form-group"><label>Password</label><input type="text" id="newUsrPass"></div>
+          <div class="form-group"><label>Nama Lengkap</label><input type="text" id="newUsrFullName"></div>
+          <div class="form-group"><label>Saldo Awal (Rp)</label><input type="number" id="newUsrSaldo" value="0"></div>
+          <div class="form-group"><label>Diskon (%)</label><input type="number" id="newUsrDiscount" value="0"></div>
+          <div class="form-group"><label>Role</label><select id="newUsrRole"><option value="user">User</option><option value="reseller">Reseller</option><option value="admin">Admin</option></select></div>
+          <button class="btn btn-green" onclick="addUser()">➕ Tambah User</button>
+        </div>
+        <div class="card-glass"><h3 style="font-size:14px;margin-bottom:14px;color:var(--pri);font-weight:900;">📋 Daftar User</h3><div id="usersListContainer"></div></div>
+      </section>
+    </main>
+    <footer>&copy; 2026 Bieberpedia.id — Digital Panel</footer>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+const firebaseConfig = {apiKey:"AIzaSyD9L7_aHtZnx8eFVw6OeR8dWwsfKubLlPQ",authDomain:"bieberpedia-ae7a0.firebaseapp.com",databaseURL:"https://bieberpedia-ae7a0-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"bieberpedia-ae7a0",storageBucket:"bieberpedia-ae7a0.firebasestorage.app",messagingSenderId:"611774412546",appId:"1:611774412546:web:03737901e5f5ec8158f41b"};
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const dataRef = ref(db, 'bieber_data');
+window.__fb = { set, onValue, dataRef };
+window.__firebaseReady = true;
+</script>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const FAYU_WORKER_URL = "https://bieberpedia-api.faiznabil878.workers.dev";
+const WN_BASE = FAYU_WORKER_URL + "/wn";
+const DEFAULT_MARKUP = 30;
+const NOKOS_MARKUP = 30;
+
+/* ============================================================
+   HASH & HELPERS
+   ============================================================ */
+async function hashPassword(p){
+  const e=new TextEncoder();
+  const d=e.encode(p+'bieberpedia_salt_2026');
+  const b=await crypto.subtle.digest('SHA-256',d);
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function isHashed(s){return typeof s==='string'&&/^[a-f0-9]{64}$/.test(s);}
+async function migratePasswords(){
+  let c=false;
+  for(let i=0;i<users.length;i++){ if(!isHashed(users[i].pass)){users[i].pass=await hashPassword(users[i].pass);c=true;} }
+  if(c){saveLocal();if(firebaseReady)saveToCloud();}
+}
+function fmtRp(n){ return 'Rp ' + (parseInt(n)||0).toLocaleString('id-ID'); }
+function setBtnLoading(btnId, isLoading, originalText){
+  const btn = document.getElementById(btnId);
+  if(!btn) return;
+  if(isLoading){ btn.disabled = true; if(!btn.dataset.orig) btn.dataset.orig = btn.innerHTML; btn.innerHTML = '<span class="spinner-sm"></span> Loading...'; }
+  else { btn.disabled = false; btn.innerHTML = originalText || btn.dataset.orig || btn.innerHTML; }
+}
+function toast(msg, type='info', dur=3200){
+  const w = document.getElementById('toastWrap'); if(!w) return alert(msg);
+  const icons = {ok:'✅', err:'❌', info:'ℹ️', warn:'⚠️'};
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.innerHTML = '<span style="font-size:16px;">' + (icons[type]||'') + '</span><span>' + msg + '</span>';
+  w.appendChild(el);
+  setTimeout(() => { el.style.transition = 'all .3s'; el.style.transform = 'translateX(400px)'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, dur);
+}
+function copyText(txt){ if(!txt) return; navigator.clipboard.writeText(txt).then(() => toast('📋 Disalin', 'ok', 1500)).catch(() => toast('Gagal', 'err')); }
+function kirimNotif(msg){ fetch(`${FAYU_WORKER_URL}/notify`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})}).catch(()=>{}); }
+
+/* ============================================================
+   DEFAULT DATA
+   ============================================================ */
+const defaultUsers = [
+  {username:"admin",pass:"AdminBieber2026!Kuat",role:"admin",saldo:1000000,fullName:"Administrator",phone:"08123456789",email:"admin@bieberpedia.id",age:25,avatar:"",isReseller:true,discount:0},
+  {username:"user",pass:"UserBieber2026!Kuat",role:"user",saldo:50000,fullName:"Pengguna",phone:"08987654321",email:"user@gmail.com",age:18,avatar:"",isReseller:false,discount:0}
+];
+
+let premiumApps = [
+  { id:'netflix', name:'Netflix Premium', emoji:'🎬', logo:'https://cdn.simpleicons.org/netflix/E50914', sold:false, tag:'hot',
+    packages:[{name:'1 Bulan Sharing',price:25000,sold:false},{name:'1 Bulan Private',price:50000,sold:false},{name:'3 Bulan Sharing',price:70000,sold:false}] },
+  { id:'spotify', name:'Spotify Premium', emoji:'🎵', logo:'https://cdn.simpleicons.org/spotify/1DB954', sold:false, tag:'hot',
+    packages:[{name:'1 Bulan Individual',price:15000,sold:false},{name:'3 Bulan Individual',price:40000,sold:false},{name:'1 Bulan Family',price:25000,sold:false}] },
+  { id:'canva', name:'Canva Pro', emoji:'🎨', logo:'https://cdn.simpleicons.org/canva/00C4CC', sold:false, tag:'hot',
+    packages:[{name:'1 Bulan',price:10000,sold:false},{name:'1 Tahun',price:50000,sold:false},{name:'Team 5 User 1 Tahun',price:100000,sold:false}] },
+  { id:'disney', name:'Disney+ Hotstar', emoji:'🏰', logo:'https://cdn.simpleicons.org/disneyplus/113CCF', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:30000,sold:false},{name:'1 Tahun',price:200000,sold:false}] },
+  { id:'viu', name:'Viu Premium', emoji:'📺', logo:'https://cdn.simpleicons.org/viu/FFCC00', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false},{name:'3 Bulan',price:40000,sold:false}] },
+  { id:'wetv', name:'WeTV VIP', emoji:'🎥', logo:'', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false}] },
+  { id:'iqiyi', name:'iQiyi VIP', emoji:'🎞️', logo:'https://cdn.simpleicons.org/iqiyi/00CC33', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:12000,sold:false}] },
+  { id:'vidio', name:'Vidio Platinum', emoji:'🎥', logo:'https://cdn.simpleicons.org/vidio/ED1C24', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false}] },
+  { id:'prime', name:'Amazon Prime Video', emoji:'📽️', logo:'https://cdn.simpleicons.org/primevideo/1F2E3E', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:20000,sold:false}] },
+  { id:'hbo', name:'HBO Max', emoji:'🎭', logo:'https://cdn.simpleicons.org/hbo/000000', sold:false, tag:'new',
+    packages:[{name:'1 Bulan',price:35000,sold:false}] },
+  { id:'youtube', name:'YouTube Premium', emoji:'▶️', logo:'https://cdn.simpleicons.org/youtube/FF0000', sold:false, tag:'hot',
+    packages:[{name:'1 Bulan',price:20000,sold:false},{name:'1 Tahun',price:150000,sold:false}] },
+  { id:'capcut', name:'CapCut Pro', emoji:'✂️', logo:'https://cdn.simpleicons.org/capcut/FFFFFF', sold:false, tag:'hot',
+    packages:[{name:'1 Bulan',price:25000,sold:false},{name:'1 Tahun',price:150000,sold:false}] },
+  { id:'chatgpt', name:'ChatGPT Plus', emoji:'🤖', logo:'https://cdn.simpleicons.org/openai/412991', sold:false, tag:'new',
+    packages:[{name:'1 Bulan Sharing',price:35000,sold:false},{name:'1 Bulan Private',price:100000,sold:false}] },
+  { id:'msoffice', name:'Microsoft 365', emoji:'📊', logo:'https://cdn.simpleicons.org/microsoftoffice/D83B01', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false},{name:'1 Tahun',price:100000,sold:false}] },
+  { id:'googleone', name:'Google One 100GB', emoji:'☁️', logo:'https://cdn.simpleicons.org/googlecloud/4285F4', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false}] },
+  { id:'grammarly', name:'Grammarly Premium', emoji:'✍️', logo:'https://cdn.simpleicons.org/grammarly/15C39A', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:18000,sold:false}] },
+  { id:'zoom', name:'Zoom Pro', emoji:'📹', logo:'https://cdn.simpleicons.org/zoom/2D8CFF', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:20000,sold:false}] },
+  { id:'duolingo', name:'Duolingo Plus', emoji:'🦉', logo:'https://cdn.simpleicons.org/duolingo/58CC02', sold:false, tag:'',
+    packages:[{name:'1 Bulan',price:15000,sold:false}] },
+  { id:'steam', name:'Steam Wallet', emoji:'🎮', logo:'https://cdn.simpleicons.org/steam/FFFFFF', sold:false, tag:'',
+    packages:[{name:'Rp 12.000',price:15000,sold:false},{name:'Rp 60.000',price:65000,sold:false},{name:'Rp 120.000',price:125000,sold:false},{name:'Rp 250.000',price:255000,sold:false}] },
+  { id:'gplay', name:'Google Play Voucher', emoji:'🎮', logo:'https://cdn.simpleicons.org/googleplay/414141', sold:false, tag:'',
+    packages:[{name:'Rp 20.000',price:23000,sold:false},{name:'Rp 50.000',price:55000,sold:false},{name:'Rp 100.000',price:105000,sold:false}] },
+  { id:'mlbb', name:'Mobile Legends Diamond', emoji:'⚔️', logo:'', sold:false, tag:'hot',
+    packages:[{name:'86 Diamond',price:22000,sold:false},{name:'172 Diamond',price:43000,sold:false},{name:'257 Diamond',price:63000,sold:false}] },
+  { id:'ff', name:'Free Fire Diamond', emoji:'🔥', logo:'', sold:false, tag:'',
+    packages:[{name:'100 Diamond',price:15000,sold:false},{name:'210 Diamond',price:30000,sold:false},{name:'355 Diamond',price:50000,sold:false}] },
+  { id:'pubg', name:'PUBG Mobile UC', emoji:'🎯', logo:'', sold:false, tag:'',
+    packages:[{name:'60 UC',price:15000,sold:false},{name:'325 UC',price:75000,sold:false}] }
+];
+
+/* ============================================================
+   POSTER LIST (ADMIN & USER)
+   ============================================================ */
+let posterList = [
+  // Contoh poster default — nanti admin bisa hapus/tambah
+  // { id:'p1', url:'https://via.placeholder.com/1200x675/ef4444/ffffff?text=Bieberpedia+Poster+1', title:'Promo Spesial', link:'' }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let services = {
+  deposit:[
+    {name:"Deposit Rp 10.000",price:10000},
+    {name:"Deposit Rp 25.000",price:25000},
+    {name:"Deposit Rp 50.000",price:50000},
+    {name:"Deposit Rp 100.000",price:100000},
+    {name:"Deposit Rp 250.000",price:250000}
+  ]
+};
+let users = defaultUsers;
+let orders = [];
+let depositOrders = [];
+let chatMessages = [];
+let currentUser = null;
+let activeChatUser = null;
+let isDataLoaded = false;
+let firebaseReady = false;
+let activeCategory = null;
+let fayuServicesRaw = {};
+let fayuCategories = [];
+let wnServices = [];
+let wnCountries = [];
+let wnProducts = [];
+let wnSelectedService = null;
+let wnSelectedCountry = null;
+let wnOtpPolls = {};
+
+/* Poster slider state */
+let posterIndex = 0;
+let posterAutoplay = null;
+
+/* ============================================================
+   AUTH
+   ============================================================ */
+function showRegister(){
+  document.getElementById('loginForm').classList.add('hide');
+  document.getElementById('registerForm').classList.remove('hide');
+  document.getElementById('pageTitle').innerText = 'Daftar Akun Baru';
+  document.getElementById('pageSubtitle').innerText = 'Gratis & cepat';
+}
+function showLogin(){
+  document.getElementById('registerForm').classList.add('hide');
+  document.getElementById('loginForm').classList.remove('hide');
+  document.getElementById('pageTitle').innerText = 'Masuk ke Akun';
+  document.getElementById('pageSubtitle').innerText = 'Digital Panel Bieberpedia';
+}
+async function handleAuth(){
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  const errEl = document.getElementById('loginErr');
+  if(!users || users.length === 0) users = defaultUsers;
+  setBtnLoading('btnLogin', true);
+  await new Promise(r => setTimeout(r, 250));
+  const hi = await hashPassword(p);
+  const found = users.find(x => x.username === u && x.pass === hi);
+  setBtnLoading('btnLogin', false, '🚀 MASUK SEKARANG');
+  if(found){ currentUser = found; localStorage.setItem('bieber_current_user', JSON.stringify(currentUser)); errEl.style.display = 'none'; showApp(); }
+  else { errEl.innerText = "❌ Username atau Password salah!"; errEl.style.display = 'block'; }
+}
+async function handleRegister(){
+  const u = document.getElementById('regUser').value.trim();
+  const fn = document.getElementById('regFullName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const p = document.getElementById('regPass').value;
+  const pc = document.getElementById('regPassConfirm').value;
+  const err = document.getElementById('registerErr');
+  const ok = document.getElementById('registerOk');
+  err.style.display='none'; ok.style.display='none';
+  if(!u || u.length < 3){ err.innerText = 'Username minimal 3 karakter'; err.style.display='block'; return; }
+  if(!fn){ err.innerText = 'Nama lengkap wajib diisi'; err.style.display='block'; return; }
+  if(!phone || phone.length < 9){ err.innerText = 'No WA tidak valid'; err.style.display='block'; return; }
+  if(!p || p.length < 6){ err.innerText = 'Password minimal 6 karakter'; err.style.display='block'; return; }
+  if(p !== pc){ err.innerText = 'Konfirmasi password tidak cocok'; err.style.display='block'; return; }
+  if(users.some(x => x.username.toLowerCase() === u.toLowerCase())){ err.innerText = 'Username sudah dipakai!'; err.style.display='block'; return; }
+  setBtnLoading('btnRegister', true);
+  const hp = await hashPassword(p);
+  const newUser = { username:u, pass:hp, role:'user', saldo:0, fullName:fn, phone:phone, email:email||'-', age:0, avatar:'', isReseller:false, discount:0, registeredAt:new Date().toISOString() };
+  users.push(newUser);
+  saveToCloud();
+  setBtnLoading('btnRegister', false, '✅ DAFTAR SEKARANG');
+  ok.innerText = '✅ Akun dibuat! Login otomatis...';
+  ok.style.display = 'block';
+  kirimNotif('🆕 USER BARU\n\nUsername: ' + u + '\nNama: ' + fn);
+  setTimeout(() => { currentUser = newUser; localStorage.setItem('bieber_current_user', JSON.stringify(currentUser)); showApp(); }, 1200);
+}
+function logout(){ localStorage.removeItem('bieber_current_user'); currentUser = null; location.reload(); }
+
+/* ============================================================
+   POSTER SLIDER
+   ============================================================ */
+function renderPosterSlider(){
+  const wrap = document.getElementById('posterSliderWrap');
+  if(!wrap) return;
+  if(posterList.length === 0){
+    wrap.innerHTML = '';
+    return;
+  }
+  let slidesHtml = '';
+  posterList.forEach((p, i) => {
+    const onClick = p.link ? 'onclick="window.open(\''+p.link.replace(/'/g,"\\'")+'\',\'_blank\')"' : '';
+    slidesHtml += '<div class="poster-slide" '+onClick+'>'
+      + '<img src="'+p.url+'" alt="'+(p.title||'Poster')+'" onerror="this.style.display=\'none\';this.parentElement.style.background=\'linear-gradient(145deg,#0d0d13,#08080e)\';">'
+      + '</div>';
+  });
+  let dotsHtml = '';
+  posterList.forEach((p, i) => {
+    dotsHtml += '<button class="poster-dot'+(i===0?' active':'')+'" onclick="event.stopPropagation();gotoSlide('+i+')"></button>';
+  });
+  const arrows = posterList.length > 1
+    ? '<button class="poster-arrow prev" onclick="event.stopPropagation();prevSlide()">‹</button><button class="poster-arrow next" onclick="event.stopPropagation();nextSlide()">›</button>'
+    : '';
+
+  wrap.innerHTML = '<div class="poster-slider">'
+    + '<div class="poster-slider-inner" id="posterInner" style="width:'+(posterList.length*100)+'%;display:flex;">'+slidesHtml+'</div>'
+    + arrows
+    + '<div class="poster-dots">'+dotsHtml+'</div>'
+    + '</div>';
+
+  posterIndex = 0;
+  updateSliderPos();
+  startAutoplay();
+}
+function updateSliderPos(){
+  const inner = document.getElementById('posterInner');
+  if(!inner) return;
+  inner.style.transform = 'translateX(-' + (posterIndex * 100 / posterList.length) + '%)';
+  document.querySelectorAll('.poster-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === posterIndex);
+  });
+}
+function gotoSlide(i){
+  posterIndex = i;
+  updateSliderPos();
+  restartAutoplay();
+}
+function nextSlide(){
+  posterIndex = (posterIndex + 1) % posterList.length;
+  updateSliderPos();
+  restartAutoplay();
+}
+function prevSlide(){
+  posterIndex = (posterIndex - 1 + posterList.length) % posterList.length;
+  updateSliderPos();
+  restartAutoplay();
+}
+function startAutoplay(){
+  if(posterAutoplay) clearInterval(posterAutoplay);
+  if(posterList.length < 2) return;
+  posterAutoplay = setInterval(() => {
+    posterIndex = (posterIndex + 1) % posterList.length;
+    updateSliderPos();
+  }, 4000);
+}
+function restartAutoplay(){
+  startAutoplay();
+}
+
+/* ============================================================
+   GALERI POSTER
+   ============================================================ */
+function renderGaleri(){
+  const grid = document.getElementById('galeriPosterGrid');
+  if(!grid) return;
+  if(posterList.length === 0){
+    grid.innerHTML = '<div class="card-glass empty" style="grid-column:1/-1;">Belum ada poster</div>';
+    return;
+  }
+  let h = '';
+  posterList.forEach(p => {
+    const onClick = p.link ? 'onclick="window.open(\''+p.link.replace(/'/g,"\\'")+'\',\'_blank\')"' : '';
+    h += '<div class="poster-thumb" '+onClick+'>'
+      + '<img src="'+p.url+'" alt="'+(p.title||'Poster')+'" onerror="this.style.display=\'none\';this.parentElement.style.background=\'linear-gradient(145deg,#0d0d13,#08080e)\';">'
+      + '</div>';
+  });
+  grid.innerHTML = h;
+}
+
+/* ============================================================
+   ADMIN - KELOLA POSTER
+   ============================================================ */
+function addPoster(){
+  const url = document.getElementById('poster-url').value.trim();
+  const title = document.getElementById('poster-title').value.trim();
+  const link = document.getElementById('poster-link').value.trim();
+  if(!url){ toast('Isi link foto dulu!', 'warn'); return; }
+  if(!/^https?:\/\//i.test(url)){ toast('Link harus mulai dengan http:// atau https://', 'warn'); return; }
+  setBtnLoading('btnAddPoster', true);
+  posterList.push({ id:'pos_'+Date.now(), url, title, link });
+  saveToCloud(); renderAll();
+  ['poster-url','poster-title','poster-link'].forEach(id => document.getElementById(id).value = '');
+  setBtnLoading('btnAddPoster', false, '➕ Tambah Poster');
+  toast('✅ Poster ditambahkan!', 'ok');
+}
+function renderAdminPoster(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const box = document.getElementById('adminPosterList');
+  if(!box) return;
+  document.getElementById('posterCount').innerText = posterList.length;
+  if(posterList.length === 0){ box.innerHTML = '<div class="empty">Belum ada poster. Tambahkan link foto di atas.</div>'; return; }
+  let h = '';
+  posterList.forEach((p, i) => {
+    h += '<div class="poster-admin-item">'
+      + '<div class="pv'+(p.url?'':' empty')+'">' + (p.url ? '<img src="'+p.url+'" onerror="this.style.display=\'none\';this.parentElement.classList.add(\'empty\');this.parentElement.innerHTML=\'🖼️\';" alt="">' : '🖼️') + '</div>'
+      + '<div class="pi">'
+      + '<input type="text" value="'+(p.url||'').replace(/"/g,'&quot;')+'" placeholder="Link foto" onchange="editPosterUrl('+i+', this.value)" onblur="editPosterUrl('+i+', this.value)">'
+      + '<input type="text" value="'+(p.title||'').replace(/"/g,'&quot;')+'" placeholder="Judul (opsional)" onchange="editPosterTitle('+i+', this.value)" onblur="editPosterTitle('+i+', this.value)">'
+      + '<input type="text" value="'+(p.link||'').replace(/"/g,'&quot;')+'" placeholder="Link tujuan (opsional)" onchange="editPosterLink('+i+', this.value)" onblur="editPosterLink('+i+', this.value)">'
+      + '</div>'
+      + '<div class="pa">'
+      + '<button class="mini-btn up" onclick="movePoster('+i+',-1)" '+(i===0?'disabled style="opacity:.4"':'')+'>↑</button>'
+      + '<button class="mini-btn down" onclick="movePoster('+i+',1)" '+(i===posterList.length-1?'disabled style="opacity:.4"':'')+'>↓</button>'
+      + '<button class="mini-btn del" onclick="delPoster('+i+')">🗑️</button>'
+      + '</div>'
+      + '</div>';
+  });
+  box.innerHTML = h;
+}
+function editPosterUrl(i, v){ if(posterList[i]){ posterList[i].url = v.trim(); saveToCloud(); renderAll(); } }
+function editPosterTitle(i, v){ if(posterList[i]){ posterList[i].title = v.trim(); saveToCloud(); } }
+function editPosterLink(i, v){ if(posterList[i]){ posterList[i].link = v.trim(); saveToCloud(); } }
+function movePoster(i, dir){
+  const j = i + dir;
+  if(j < 0 || j >= posterList.length) return;
+  const tmp = posterList[i];
+  posterList[i] = posterList[j];
+  posterList[j] = tmp;
+  saveToCloud(); renderAll();
+}
+function delPoster(i){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  if(!confirm('Hapus poster ini?')) return;
+  posterList.splice(i, 1);
+  saveToCloud(); renderAll();
+  toast('🗑️ Poster dihapus', 'ok');
+}
+
+/* ============================================================
+   PREMIUM
+   ============================================================ */
+function renderPremiumGrid(){
+  const grid = document.getElementById('premiumGrid');
+  if(!grid) return;
+  grid.classList.remove('hide');
+  document.getElementById('premiumFormArea').classList.add('hide');
+  grid.innerHTML = '';
+  if(premiumApps.length === 0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">Belum ada produk</div>'; return; }
+  premiumApps.forEach(app => {
+    const availablePkgs = app.packages.filter(p => !p.sold);
+    const minPrice = availablePkgs.length > 0 ? Math.min(...availablePkgs.map(p => p.price)) : 0;
+    const allSold = app.sold || availablePkgs.length === 0;
+    const card = document.createElement('div');
+    card.className = 'premium-card' + (allSold ? ' sold-out' : '');
+    card.onclick = allSold ? null : () => openPremiumForm(app.id);
+    let iconHtml;
+    if(app.logo && app.logo.startsWith('http')) iconHtml = '<img src="'+app.logo+'" class="premium-logo" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"><div class="premium-emoji" style="display:none;">'+app.emoji+'</div>';
+    else iconHtml = '<div class="premium-emoji">'+app.emoji+'</div>';
+    let tagHtml = '';
+    if(app.tag === 'new') tagHtml = '<div class="tag-new">NEW</div>';
+    else if(app.tag === 'hot') tagHtml = '<div class="tag-hot">HOT</div>';
+    card.innerHTML = (allSold ? '<div class="sold-badge">SOLD</div>' : tagHtml) + iconHtml + '<div class="premium-name">'+app.name+'</div><div class="premium-price">'+(allSold ? '<span style="color:#f87171;">STOK HABIS</span>' : 'Mulai '+fmtRp(minPrice))+'</div><button class="premium-btn">'+(allSold ? '❌ HABIS' : 'Pilih')+'</button>';
+    grid.appendChild(card);
+  });
+}
+function filterPremiumApps(){
+  const q = document.getElementById('search-premium').value.toLowerCase();
+  document.querySelectorAll('#premiumGrid .premium-card').forEach(el => {
+    el.style.display = el.querySelector('.premium-name').innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+let selectedPremiumApp = null;
+function openPremiumForm(appId){
+  selectedPremiumApp = premiumApps.find(a => a.id === appId);
+  if(!selectedPremiumApp) return;
+  document.getElementById('premiumGrid').classList.add('hide');
+  document.getElementById('premiumFormArea').classList.remove('hide');
+  document.getElementById('activePremiumTitle').innerText = selectedPremiumApp.emoji + ' ' + selectedPremiumApp.name;
+  const sel = document.getElementById('sel-premium');
+  sel.innerHTML = '<option value="">-- Pilih Paket --</option>';
+  selectedPremiumApp.packages.forEach((pkg, index) => {
+    if(pkg.sold) return;
+    const opt = document.createElement('option');
+    opt.value = index;
+    opt.setAttribute('data-price', pkg.price);
+    opt.innerText = pkg.name + ' - ' + fmtRp(pkg.price);
+    sel.appendChild(opt);
+  });
+  document.getElementById('target-premium').value = '';
+  document.getElementById('phone-premium').value = '';
+  document.getElementById('qty-premium').value = 1;
+  updatePremiumPrice();
+}
+function backToPremiumGrid(){
+  document.getElementById('premiumGrid').classList.remove('hide');
+  document.getElementById('premiumFormArea').classList.add('hide');
+  selectedPremiumApp = null;
+}
+function updatePremiumPrice(){
+  const sel = document.getElementById('sel-premium');
+  const qty = parseInt(document.getElementById('qty-premium').value) || 1;
+  let price = 0;
+  if(sel.value !== "") price = parseInt(sel.options[sel.selectedIndex].dataset.price);
+  let total = price * qty;
+  if(currentUser && currentUser.discount && total > 0) total = total - Math.ceil(total * currentUser.discount / 100);
+  document.getElementById('prc-premium').innerText = fmtRp(total);
+}
+async function checkoutPremiumOrder(){
+  const sel = document.getElementById('sel-premium');
+  const target = document.getElementById('target-premium').value.trim();
+  const phone = document.getElementById('phone-premium').value.trim();
+  const qty = parseInt(document.getElementById('qty-premium').value) || 1;
+  if(sel.value === ""){ toast('Pilih paket dulu!', 'warn'); return; }
+  if(!target || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(target)){ toast('❌ Email tidak valid!', 'err'); return; }
+  let price = parseInt(sel.options[sel.selectedIndex].dataset.price);
+  let total = price * qty;
+  if(currentUser.discount) total = total - Math.ceil(total * currentUser.discount / 100);
+  if((currentUser.saldo || 0) < total){ toast('❌ Saldo tidak cukup!', 'err'); goTab('deposit'); return; }
+  const pkgName = sel.options[sel.selectedIndex].text;
+  if(!confirm('Konfirmasi Order\n\n💎 ' + selectedPremiumApp.name + '\n📦 ' + pkgName + '\n📧 ' + target + (phone ? '\n📱 ' + phone : '') + '\n🔢 Qty: ' + qty + '\n\n💰 Total: ' + fmtRp(total))) return;
+  setBtnLoading('btnOrderPrem', true);
+  currentUser.saldo -= total;
+  const i = users.findIndex(u => u.username === currentUser.username);
+  if(i !== -1) users[i].saldo = currentUser.saldo;
+  localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+  updateProfile();
+  const ord = {
+    id: 'PRM-' + Date.now(),
+    type: 'PREMIUM',
+    user: currentUser.username,
+    appName: selectedPremiumApp.name,
+    service: selectedPremiumApp.name + ' — ' + pkgName.replace(/ - Rp.*/,''),
+    target: target,
+    phone: phone || '-',
+    qty: qty,
+    price: total,
+    status: 'DIPROSES',
+    adminEmail: '',
+    adminPassword: '',
+    adminNote: '',
+    date: new Date().toLocaleString('id-ID')
+  };
+  orders.unshift(ord);
+  saveToCloud(); renderAll();
+  kirimNotif('💎 ORDER PREMIUM\n\nUser: ' + currentUser.username + '\nProduk: ' + ord.service + '\nEmail: ' + target + (phone ? '\nWA: ' + phone : '') + '\nTotal: ' + fmtRp(total));
+  setBtnLoading('btnOrderPrem', false, '🛒 Order Sekarang');
+  toast('✅ Order berhasil! Admin akan kirim akun ke email kamu.', 'ok', 5000);
+  goTab('riwayat');
+}
+
+/* ============================================================
+   ADMIN - KELOLA APK PREMIUM
+   ============================================================ */
+async function addPremiumApp(){
+  const name = document.getElementById('np-name').value.trim();
+  const emoji = document.getElementById('np-emoji').value.trim() || '📦';
+  const logo = document.getElementById('np-logo').value.trim();
+  const tag = document.getElementById('np-tag').value;
+  if(!name){ toast('Isi nama aplikasi!', 'warn'); return; }
+  const id = name.toLowerCase().replace(/[^a-z0-9]/g,'_') + '_' + Date.now();
+  setBtnLoading('btnAddProd', true);
+  premiumApps.push({ id, name, emoji, logo: logo||'', sold: false, tag: tag||'', packages: [] });
+  saveToCloud(); renderAll();
+  ['np-name','np-emoji','np-logo'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('np-tag').value = '';
+  setBtnLoading('btnAddProd', false, '➕ Tambah Aplikasi');
+  toast('✅ Aplikasi ditambahkan!', 'ok');
+}
+function renderAdminProducts(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const box = document.getElementById('adminProductsList');
+  if(!box) return;
+  const kw = (document.getElementById('search-prod').value || '').toLowerCase();
+  document.getElementById('prodCount').innerText = premiumApps.length;
+  const list = premiumApps.filter(p => !kw || p.name.toLowerCase().includes(kw));
+  if(list.length === 0){ box.innerHTML = '<div class="empty">Tidak ada aplikasi</div>'; return; }
+  let h = '';
+  list.forEach(app => {
+    const idx = premiumApps.findIndex(x => x.id === app.id);
+    const pkgs = app.packages || [];
+    h += '<div style="background:linear-gradient(145deg,#0c0c12,#08080e);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:14px;margin-bottom:12px;">';
+    h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
+    h += '<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(239,68,68,.1);border-radius:9px;flex-shrink:0;">'+app.emoji+'</div>';
+    h += '<div style="flex:1;min-width:0;"><div style="font-weight:800;color:#fff;font-size:13px;">'+app.name+(app.sold ? ' <span class="badge-sold">SOLD</span>' : '')+(app.tag==='new' ? ' <span class="badge-new">NEW</span>' : '')+(app.tag==='hot' ? ' <span class="badge-hot">HOT</span>' : '')+'</div><div style="font-size:10px;color:var(--mut);margin-top:2px;">'+pkgs.length+' paket</div></div>';
+    h += '<div style="display:flex;gap:4px;flex-wrap:wrap;">';
+    h += '<button class="mini-btn edit" onclick="editPremiumApp('+idx+')">✏️</button>';
+    h += '<button class="mini-btn" onclick="toggleSoldApp('+idx+')" style="background:'+(app.sold?'linear-gradient(135deg,#166534,#052e16);color:#4ade80':'linear-gradient(135deg,#7c2d12,#431407);color:#fbbf24')+';">'+(app.sold?'✅':'❌')+'</button>';
+    h += '<button class="mini-btn del" onclick="delPremiumApp('+idx+')">🗑️</button>';
+    h += '</div></div>';
+    h += '<div style="background:rgba(0,0,0,.3);border-radius:9px;padding:10px;margin-bottom:10px;">';
+    if(pkgs.length === 0){ h += '<div style="font-size:11px;color:var(--mut);text-align:center;padding:8px;">Belum ada paket</div>'; }
+    else {
+      pkgs.forEach((pkg, pi) => {
+        h += '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11.5px;">';
+        h += '<div style="flex:1;color:#fff;font-weight:600;">'+pkg.name+(pkg.sold ? ' <span class="badge-sold">SOLD</span>' : '')+'</div>';
+        h += '<div style="color:var(--pri);font-weight:800;font-size:12px;">'+fmtRp(pkg.price)+'</div>';
+        h += '<button class="mini-btn edit" onclick="editPackage('+idx+','+pi+')" style="padding:3px 7px;font-size:10px;">✏️</button>';
+        h += '<button class="mini-btn" onclick="toggleSoldPackage('+idx+','+pi+')" style="padding:3px 7px;font-size:10px;background:'+(pkg.sold?'linear-gradient(135deg,#166534,#052e16);color:#4ade80':'linear-gradient(135deg,#7c2d12,#431407);color:#fbbf24')+';">'+(pkg.sold?'✅':'❌')+'</button>';
+        h += '<button class="mini-btn del" onclick="delPackage('+idx+','+pi+')" style="padding:3px 7px;font-size:10px;">🗑️</button>';
+        h += '</div>';
+      });
+    }
+    h += '</div>';
+    h += '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">';
+    h += '<input type="text" id="pkg-name-'+idx+'" placeholder="Nama paket" style="flex:1;min-width:120px;font-size:11px;padding:8px 10px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#fff;">';
+    h += '<input type="number" id="pkg-price-'+idx+'" placeholder="Harga" style="width:90px;font-size:11px;padding:8px 10px;background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#fff;">';
+    h += '<button class="mini-btn edit" onclick="addPackage('+idx+')" style="padding:8px 12px;">➕ Paket</button>';
+    h += '</div></div>';
+  });
+  box.innerHTML = h;
+}
+function editPremiumApp(idx){
+  const app = premiumApps[idx]; if(!app) return;
+  const n = prompt('Nama Aplikasi:', app.name); if(n === null) return;
+  const e = prompt('Emoji:', app.emoji); if(e === null) return;
+  const l = prompt('Logo URL:', app.logo || ''); if(l === null) return;
+  const t = prompt('Tag (kosong/new/hot):', app.tag || ''); if(t === null) return;
+  app.name = n.trim() || app.name; app.emoji = e.trim() || '📦'; app.logo = l.trim(); app.tag = t.trim().toLowerCase();
+  saveToCloud(); renderAll(); toast('✅ Update', 'ok');
+}
+function toggleSoldApp(idx){ const app = premiumApps[idx]; if(!app) return; app.sold = !app.sold; saveToCloud(); renderAll(); toast(app.sold ? '❌ SOLD' : '✅ READY', 'ok'); }
+function delPremiumApp(idx){ const app = premiumApps[idx]; if(!app) return; if(!confirm('Hapus ' + app.name + '?')) return; premiumApps.splice(idx, 1); saveToCloud(); renderAll(); toast('🗑️ Dihapus', 'ok'); }
+function addPackage(idx){
+  const app = premiumApps[idx]; if(!app) return;
+  const name = document.getElementById('pkg-name-' + idx).value.trim();
+  const price = parseInt(document.getElementById('pkg-price-' + idx).value);
+  if(!name){ toast('Isi nama paket!', 'warn'); return; }
+  if(!price || price < 0){ toast('Isi harga!', 'warn'); return; }
+  app.packages.push({ name, price, sold: false });
+  saveToCloud(); renderAll(); toast('✅ Paket ditambah', 'ok');
+}
+function editPackage(idx, pi){
+  const app = premiumApps[idx]; if(!app) return;
+  const pkg = app.packages[pi];
+  const n = prompt('Nama Paket:', pkg.name); if(n === null) return;
+  const p = prompt('Harga (Rp):', pkg.price); if(p === null) return;
+  pkg.name = n.trim() || pkg.name; pkg.price = parseInt(p) || pkg.price;
+  saveToCloud(); renderAll(); toast('✅ Update', 'ok');
+}
+function toggleSoldPackage(idx, pi){ const app = premiumApps[idx]; if(!app) return; app.packages[pi].sold = !app.packages[pi].sold; saveToCloud(); renderAll(); toast(app.packages[pi].sold ? '❌ SOLD' : '✅ READY', 'ok'); }
+function delPackage(idx, pi){ const app = premiumApps[idx]; if(!app) return; if(!confirm('Hapus paket?')) return; app.packages.splice(pi, 1); saveToCloud(); renderAll(); toast('🗑️ Dihapus', 'ok'); }
+
+/* ============================================================
+   ADMIN - KONTROL ORDER
+   ============================================================ */
+function renderAdminOrders(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const c = document.getElementById('adminOrdersContainer');
+  if(!c) return;
+  const kw = (document.getElementById('searchOrder').value || '').toLowerCase();
+  const f = orders.filter(o => o.type === 'PREMIUM' && (!kw || o.id.toLowerCase().includes(kw) || o.user.toLowerCase().includes(kw) || (o.service||'').toLowerCase().includes(kw)));
+  document.getElementById('a-total').innerText = orders.filter(o => o.type === 'PREMIUM').length;
+  document.getElementById('a-pending').innerText = orders.filter(o => o.type === 'PREMIUM' && o.status === 'DIPROSES').length;
+  document.getElementById('a-done').innerText = orders.filter(o => o.type === 'PREMIUM' && o.status === 'SELESAI').length;
+  document.getElementById('a-omzet').innerText = fmtRp(orders.filter(o => o.type === 'PREMIUM' && o.status === 'SELESAI').reduce((a,c) => a + (c.price||0), 0));
+  if(f.length === 0){ c.innerHTML = '<div class="card-glass empty">Tidak ada order.</div>'; return; }
+  let h = '';
+  f.forEach(o => {
+    let stCls = 'b-pending', stTxt = '⏳ PERLU KIRIM';
+    if(o.status === 'SELESAI'){ stCls = 'b-done'; stTxt = '✅ TERKIRIM'; }
+    else if(o.status === 'GAGAL'){ stCls = 'b-cancel'; stTxt = '❌ GAGAL'; }
+    h += '<div class="ord-item">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><strong style="color:var(--pri);font-size:13px;">'+o.id+'</strong><span class="badge '+stCls+'">'+stTxt+'</span></div>';
+    h += '<div class="ord-row"><span>👤 User</span><strong>'+o.user+'</strong></div>';
+    h += '<div class="ord-row"><span>💎 Produk</span><span>'+o.service+'</span></div>';
+    h += '<div class="ord-row"><span>📧 Email User</span><strong style="color:#4ade80;">'+o.target+'</strong></div>';
+    if(o.phone && o.phone !== '-') h += '<div class="ord-row"><span>📱 WA</span><span>'+o.phone+'</span></div>';
+    h += '<div class="ord-row"><span>💰 Total</span><strong style="color:var(--pri);">'+fmtRp(o.price)+'</strong></div>';
+    h += '<div class="ord-row"><span>🕒 Order</span><span style="font-size:11px;">'+o.date+'</span></div>';
+    if(o.status === 'DIPROSES'){
+      h += '<div class="kirim-form">';
+      h += '<div class="fm-hd">📤 KIRIM AKUN PREMIUM KE USER</div>';
+      h += '<div class="fg"><label>📧 Email Akun Premium</label><input type="text" id="akun-email-'+o.id+'" placeholder="contoh: netflix123@gmail.com"></div>';
+      h += '<div class="fg"><label>🔐 Password Akun</label><input type="text" id="akun-pass-'+o.id+'" placeholder="contoh: Pass123!@#"></div>';
+      h += '<div class="fg"><label>📝 Catatan (opsional)</label><input type="text" id="akun-note-'+o.id+'" placeholder="contoh: Profil 1, aktif s/d 30 Nov 2026"></div>';
+      h += '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;">';
+      h += '<button class="btn btn-sm btn-green" id="btnKirim-'+o.id+'" onclick="kirimAkunManual(\''+o.id+'\')">✅ Kirim ke User</button>';
+      h += '<button class="btn btn-sm btn-red" onclick="tolakOrder(\''+o.id+'\')">❌ Tolak & Refund</button>';
+      h += '<button class="btn btn-sm btn-gray" onclick="delOrder(\''+o.id+'\')">🗑️ Hapus</button>';
+      h += '</div></div>';
+    } else if(o.status === 'SELESAI' && o.adminEmail){
+      h += '<div class="akun-result" style="margin-top:12px;">';
+      h += '<div class="hd"><span class="ic">✅</span><span class="tt">SUDAH DIKIRIM</span></div>';
+      h += '<div class="row"><div class="lb">📧 Email</div><div class="vl"><span class="tx">'+o.adminEmail+'</span></div></div>';
+      h += '<div class="row"><div class="lb">🔐 Password</div><div class="vl"><span class="tx">'+o.adminPassword+'</span></div></div>';
+      if(o.adminNote) h += '<div style="font-size:11px;color:#86efac;background:rgba(0,0,0,.3);padding:10px;border-radius:9px;">📝 '+o.adminNote+'</div>';
+      h += '<div style="margin-top:10px;"><button class="btn btn-sm btn-gray" onclick="delOrder(\''+o.id+'\')">🗑️ Hapus Order</button></div>';
+      h += '</div>';
+    } else {
+      h += '<div style="margin-top:10px;"><button class="btn btn-sm btn-gray" onclick="delOrder(\''+o.id+'\')">🗑️ Hapus</button></div>';
+    }
+    h += '</div>';
+  });
+  c.innerHTML = h;
+}
+function kirimAkunManual(orderId){
+  const email = (document.getElementById('akun-email-' + orderId).value || '').trim();
+  const pass = (document.getElementById('akun-pass-' + orderId).value || '').trim();
+  const note = (document.getElementById('akun-note-' + orderId).value || '').trim();
+  if(!email || !pass){ toast('⚠️ Isi email & password akun dulu!', 'warn', 4000); return; }
+  setBtnLoading('btnKirim-' + orderId, true);
+  const o = orders.find(x => x.id === orderId);
+  if(!o){ setBtnLoading('btnKirim-' + orderId, false, '✅ Kirim ke User'); return; }
+  o.adminEmail = email;
+  o.adminPassword = pass;
+  o.adminNote = note;
+  o.status = 'SELESAI';
+  o.processedAt = new Date().toLocaleString('id-ID');
+  saveToCloud();
+  kirimNotif('✅ AKUN PREMIUM DIKIRIM\n\nUser: ' + o.user + '\nProduk: ' + o.service + '\nEmail User: ' + o.target + '\nEmail Akun: ' + email + '\nPassword: ' + pass + (note ? '\nNote: ' + note : ''));
+  toast('✅ Akun dikirim! User bisa lihat di riwayat.', 'ok', 5000);
+  renderAll();
+}
+function tolakOrder(orderId){
+  const o = orders.find(x => x.id === orderId); if(!o) return;
+  if(!confirm('Tolak & refund ' + fmtRp(o.price) + '?')) return;
+  o.status = 'GAGAL';
+  const u = users.find(x => x.username === o.user);
+  if(u) u.saldo = (u.saldo||0) + o.price;
+  saveToCloud(); toast('Ditolak & refund', 'info'); renderAll();
+}
+function delOrder(orderId){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  if(!confirm('Hapus order?')) return;
+  orders = orders.filter(o => o.id !== orderId);
+  saveToCloud(); renderAll(); toast('🗑️ Dihapus', 'ok');
+}
+
+/* ============================================================
+   RIWAYAT
+   ============================================================ */
+function renderRiwayat(){
+  const c = document.getElementById('riwayatContainer');
+  if(!c || !currentUser) return;
+  const mo = orders.filter(o => currentUser.role === 'admin' || o.user === currentUser.username);
+  if(mo.length === 0){ c.innerHTML = '<div class="card-glass empty">Belum ada order.</div>'; return; }
+  let h = '';
+  mo.forEach(o => {
+    let stCls = 'b-pending', stTxt = '⏳ DIPROSES';
+    if(o.status === 'SELESAI'){ stCls = 'b-done'; stTxt = '✅ SELESAI'; }
+    else if(o.status === 'GAGAL'){ stCls = 'b-cancel'; stTxt = '❌ GAGAL'; }
+    const typeLabel = o.type === 'PREMIUM' ? '💎 PREMIUM' : o.type === 'NOKOS' ? '📞 NOKOS' : '📱 SOSMED';
+    h += '<div class="ord-item"><div class="ord-row"><span>ID</span><strong>'+o.id+'</strong></div><div class="ord-row"><span>Kategori</span><span>'+typeLabel+'</span></div><div class="ord-row"><span>Produk</span><span>'+o.service+'</span></div>';
+    if(o.type === 'PREMIUM') h += '<div class="ord-row"><span>Email</span><span>'+o.target+'</span></div>';
+    else if(o.type === 'NOKOS') h += '<div class="ord-row"><span>Negara</span><span>'+o.country+'</span></div>';
+    else h += '<div class="ord-row"><span>Target</span><span>'+o.target+'</span></div>';
+    h += '<div class="ord-row"><span>Total</span><strong style="color:var(--pri);">'+fmtRp(o.price)+'</strong></div><div class="ord-row"><span>Status</span><span class="badge '+stCls+'">'+stTxt+'</span></div>';
+    if(o.type === 'PREMIUM' && o.status === 'SELESAI' && o.adminEmail){
+      h += '<div class="akun-result">';
+      h += '<div class="hd"><span class="ic">🎉</span><span class="tt">AKUN PREMIUM KAMU</span></div>';
+      h += '<div class="row"><div class="lb">📧 Email / Username Akun</div><div class="vl"><span class="tx">'+o.adminEmail+'</span><button class="cp" onclick="copyText(\''+o.adminEmail.replace(/'/g,"\\'")+'\')">📋 Copy</button></div></div>';
+      h += '<div class="row"><div class="lb">🔐 Password Akun</div><div class="vl"><span class="tx">'+o.adminPassword+'</span><button class="cp" onclick="copyText(\''+o.adminPassword.replace(/'/g,"\\'")+'\')">📋 Copy</button></div></div>';
+      if(o.adminNote) h += '<div style="font-size:11px;color:#86efac;background:rgba(0,0,0,.3);padding:10px;border-radius:9px;border:1px dashed rgba(22,163,74,.3);line-height:1.6;">📝 ' + o.adminNote + '</div>';
+      h += '</div>';
+    } else if(o.type === 'NOKOS' && o.status === 'SELESAI' && o.phoneNumber){
+      h += '<div class="akun-result" style="border-color:var(--pri);background:rgba(239,68,68,.08);"><div class="hd"><span class="ic">📞</span><span class="tt" style="color:#fca5a5;">NOMOR VIRTUAL & OTP</span></div><div class="row" style="border-color:rgba(239,68,68,.25);"><div class="lb" style="color:#fca5a5;">📱 Nomor</div><div class="vl"><span class="tx">'+o.phoneNumber+'</span><button class="cp" onclick="copyText(\''+o.phoneNumber+'\')">📋</button></div></div><div class="row" style="border-color:rgba(239,68,68,.25);"><div class="lb" style="color:#fca5a5;">🔐 OTP</div><div class="vl"><span class="tx" style="color:#4ade80;letter-spacing:2px;">'+(o.otp||'-')+'</span>'+(o.otp?'<button class="cp" onclick="copyText(\''+o.otp+'\')">📋</button>':'')+'</div></div></div>';
+    } else if((o.status === 'DIPROSES' || o.status === 'PROCESSING') && (o.type === 'PREMIUM' || o.type === 'NOKOS')){
+      h += '<div style="background:rgba(251,191,36,.08);border:1px dashed rgba(251,191,36,.4);border-radius:10px;padding:11px;margin:10px 0;text-align:center;font-size:11.5px;color:var(--gold);font-weight:800;">⏳ Sedang diproses admin</div>';
+    }
+    h += '</div>';
+  });
+  c.innerHTML = h;
+}
+function renderRiwayatDeposit(){
+  const c = document.getElementById('riwayatDepositContainer');
+  if(!c || !currentUser) return;
+  const md = depositOrders.filter(d => currentUser.role === 'admin' || d.user === currentUser.username);
+  if(md.length === 0){ c.innerHTML = '<div class="card-glass empty">Belum ada deposit.</div>'; return; }
+  let h = '';
+  md.forEach(d => {
+    const bc = (d.status === 'SELESAI' || d.status === 'success') ? 'b-done' : ((d.status === 'GAGAL' || d.status === 'failed') ? 'b-cancel' : 'b-pending');
+    h += '<div class="ord-item"><div class="ord-row"><span>ID</span><strong>'+d.id+'</strong></div><div class="ord-row"><span>Nominal</span><strong style="color:var(--pri);">'+fmtRp(d.price)+'</strong></div><div class="ord-row"><span>Status</span><span class="badge '+bc+'">'+d.status+'</span></div></div>';
+  });
+  c.innerHTML = h;
+}
+
+/* ============================================================
+   SOSMED
+   ============================================================ */
+function getHargaFinal(modalPer1000, qty, user){
+  const modalTotal = Math.ceil((modalPer1000 * qty) / 1000);
+  const hargaNormal = Math.ceil(modalTotal * (1 + DEFAULT_MARKUP/100));
+  const diskonPct = user && user.discount ? parseFloat(user.discount) : 0;
+  const diskonRp = Math.ceil(hargaNormal * diskonPct / 100);
+  const jual = hargaNormal - diskonRp;
+  return { modalTotal, hargaNormal, diskonPct, diskonRp, jual, untung:jual-modalTotal };
+}
+async function loadAllFayuServices(){
+  const grid = document.getElementById('catGrid');
+  if(!grid) return;
+  grid.innerHTML = '<div class="loading-box" style="grid-column:1/-1;"><div class="spinner-lg"></div><div>Memuat...</div></div>';
+  try{
+    const res = await fetch(`${FAYU_WORKER_URL}/services`);
+    const data = await res.json();
+    if(!data.status || !data.categories){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + (data.msg || 'Gagal') + '</div>'; return; }
+    fayuServicesRaw = data.categories;
+    fayuCategories = Object.keys(data.categories).map(n => ({name:n, count:data.categories[n].length})).sort((a,b)=>a.name.localeCompare(b.name));
+    renderFayuCategoryGrid();
+  }catch(err){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + err.message + '</div>'; }
+}
+function getCategoryLogo(catName){
+  const n = catName.toLowerCase();
+  const map = [
+    ['tiktok','https://cdn.simpleicons.org/tiktok/FFFFFF'],['instagram','https://cdn.simpleicons.org/instagram/E4405F'],
+    ['facebook','https://cdn.simpleicons.org/facebook/1877F2'],['youtube','https://cdn.simpleicons.org/youtube/FF0000'],
+    ['twitter','https://cdn.simpleicons.org/x/FFFFFF'],['telegram','https://cdn.simpleicons.org/telegram/26A5E4'],
+    ['whatsapp','https://cdn.simpleicons.org/whatsapp/25D366'],['threads','https://cdn.simpleicons.org/threads/FFFFFF'],
+    ['shopee','https://cdn.simpleicons.org/shopee/EE4D2D'],['spotify','https://cdn.simpleicons.org/spotify/1DB954']
+  ];
+  for(const [key, url] of map){ if(n.includes(key)) return url; }
+  return null;
+}
+function renderFayuCategoryGrid(){
+  const grid = document.getElementById('catGrid');
+  if(!grid) return;
+  let html = '';
+  fayuCategories.forEach(cat => {
+    const safe = cat.name.replace(/\\/g,'\\\\').replace(/'/g, "\\'");
+    const logo = getCategoryLogo(cat.name);
+    const iconHtml = logo ? '<img src="'+logo+'" class="logo-img" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><span class="icon" style="display:none;">📱</span>' : '<span class="icon">📱</span>';
+    html += '<div class="cat-btn" onclick="selectFayuCategory(\''+safe+'\')">'+iconHtml+'<span class="name">'+cat.name+'</span><div style="font-size:10px;color:#94a3b8;margin-top:4px;">'+cat.count+' layanan</div></div>';
+  });
+  grid.innerHTML = html || '<div class="empty" style="grid-column:1/-1;">Kosong</div>';
+}
+function selectFayuCategory(catName){
+  activeCategory = catName;
+  document.getElementById('catGrid').classList.add('hide');
+  document.getElementById('serviceFormArea').classList.remove('hide');
+  document.getElementById('activeCatTitle').innerText = '📱 ' + catName.toUpperCase();
+  const sel = document.getElementById('sel-sosmed');
+  sel.innerHTML = '<option value="">-- Pilih Layanan --</option>';
+  (fayuServicesRaw[catName] || []).forEach(s => {
+    const o = document.createElement('option');
+    o.value = s.id; o.setAttribute('data-price', s.price);
+    o.setAttribute('data-min', s.min); o.setAttribute('data-max', s.max);
+    o.setAttribute('data-name', s.name);
+    o.innerText = s.name + ' — ' + fmtRp(s.price) + '/k';
+    sel.appendChild(o);
+  });
+  document.getElementById('prc-sosmed').innerText = 'Rp 0';
+}
+function backToFayuCategories(){
+  activeCategory = null;
+  document.getElementById('catGrid').classList.remove('hide');
+  document.getElementById('serviceFormArea').classList.add('hide');
+}
+function filterCategory(){
+  const q = document.getElementById('search-cat').value.toLowerCase();
+  document.querySelectorAll('#catGrid .cat-btn').forEach(el => {
+    el.style.display = el.querySelector('.name').innerText.toLowerCase().includes(q) ? 'flex' : 'none';
+  });
+}
+function filterServices(){
+  const q = document.getElementById('search-svc').value.toLowerCase();
+  document.getElementById('sel-sosmed').querySelectorAll('option').forEach(o => {
+    if(o.value === '') return;
+    o.style.display = (o.getAttribute('data-name') || '').toLowerCase().includes(q) ? 'block' : 'none';
+  });
+}
+function updateFayuPrice(){
+  const sel = document.getElementById('sel-sosmed');
+  const qty = parseInt(document.getElementById('qty-sosmed').value) || 0;
+  if(!sel.value || qty <= 0){ document.getElementById('prc-sosmed').innerText = 'Rp 0'; return; }
+  const opt = sel.options[sel.selectedIndex];
+  const modal = parseInt(opt.getAttribute('data-price') || 0);
+  const min = parseInt(opt.getAttribute('data-min') || 1);
+  const max = parseInt(opt.getAttribute('data-max') || 1000);
+  document.getElementById('minmax-info').innerText = 'Min: ' + min + ' · Max: ' + max.toLocaleString('id-ID');
+  const h = getHargaFinal(modal, qty, currentUser);
+  document.getElementById('prc-sosmed').innerText = fmtRp(h.jual);
+}
+async function checkoutFayuOrder(){
+  if(!currentUser) return;
+  const sel = document.getElementById('sel-sosmed');
+  const target = document.getElementById('target-sosmed').value.trim();
+  const qty = parseInt(document.getElementById('qty-sosmed').value);
+  if(!sel.value){ toast('Pilih layanan!', 'warn'); return; }
+  if(!target){ toast('Isi target!', 'warn'); return; }
+  if(!qty || qty <= 0){ toast('Isi jumlah!', 'warn'); return; }
+  const opt = sel.options[sel.selectedIndex];
+  const modal = parseInt(opt.getAttribute('data-price') || 0);
+  const name = opt.getAttribute('data-name');
+  const sid = sel.value;
+  const h = getHargaFinal(modal, qty, currentUser);
+  if((currentUser.saldo || 0) < h.jual){ toast('❌ Saldo tidak cukup!', 'err'); goTab('deposit'); return; }
+  if(!confirm('Konfirmasi Order\n\n📦 '+name+'\n🔗 '+target+'\n📊 '+qty+'\n💵 '+fmtRp(h.jual))) return;
+  setBtnLoading('btnOrderSosmed', true);
+  currentUser.saldo -= h.jual;
+  const i = users.findIndex(u => u.username === currentUser.username);
+  if(i !== -1) users[i].saldo = currentUser.saldo;
+  localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+  updateProfile();
+  try{
+    const res = await fetch(`${FAYU_WORKER_URL}/order`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({service_id:sid, service_name:name, target, quantity:qty, price_modal:h.modalTotal, price_jual:h.jual, username:currentUser.username}) });
+    const result = await res.json();
+    const ord = { id:'ORD-'+Date.now(), type:'SOSMED', user:currentUser.username, category:activeCategory||'SOSMED', service:name, target, serviceId:sid, qty:qty, price:h.jual, modal:h.modalTotal, profit:h.untung, status:result.status ? 'PROCESSING' : 'GAGAL', fayuOrderId:result.order || '', date:new Date().toLocaleString('id-ID') };
+    orders.unshift(ord);
+    if(!result.status){
+      currentUser.saldo += h.jual;
+      if(i !== -1) users[i].saldo = currentUser.saldo;
+      localStorage.setItem('bieber_current_user', JSON.stringify(currentUser)); updateProfile();
+    }
+    saveToCloud(); renderRiwayat();
+    toast(result.status ? '✅ Order berhasil!' : '❌ Gagal: '+result.msg, result.status ? 'ok' : 'err', 5000);
+  }catch(err){
+    currentUser.saldo += h.jual;
+    if(i !== -1) users[i].saldo = currentUser.saldo;
+    localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+    updateProfile(); saveToCloud();
+    toast('❌ Error: '+err.message, 'err', 5000);
+  }
+  setBtnLoading('btnOrderSosmed', false, '⚡ Order Sekarang');
+  goTab('riwayat');
+}
+
+/* ============================================================
+   NOKOS
+   ============================================================ */
+async function wnFetch(path, opts){
+  const url = WN_BASE + path;
+  const config = { method: opts && opts.method ? opts.method : 'GET', headers: { 'Accept':'application/json', 'Content-Type':'application/json' } };
+  if(opts && opts.body) config.body = JSON.stringify(opts.body);
+  const res = await fetch(url, config);
+  const txt = await res.text();
+  const trimmed = txt.trim();
+  if(trimmed.startsWith('<') || trimmed.startsWith('<!DOCTYPE') || trimmed.startsWith('<html')){ throw new Error('Endpoint tidak ditemukan (HTTP ' + res.status + ')'); }
+  try{ return JSON.parse(txt); } catch(e){ throw new Error('Response tidak valid'); }
+}
+async function loadWnServices(force){
+  const grid = document.getElementById('wnServiceGrid');
+  if(!grid) return;
+  if(wnServices.length > 0 && !force){ renderWnServices(); return; }
+  grid.innerHTML = '<div class="loading-box" style="grid-column:1/-1;"><div class="spinner-lg"></div><div>Memuat...</div></div>';
+  try{
+    const d = await wnFetch('/api/smscode/services');
+    if(d.success && Array.isArray(d.data)){ wnServices = d.data.filter(s => s.active !== false); renderWnServices(); }
+    else grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + (d.message || d.msg || 'Gagal') + '</div>';
+  }catch(e){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + e.message + '</div>'; }
+}
+function getWnServiceLogo(code, name, imgUrl){
+  if(imgUrl && imgUrl.startsWith('http')) return imgUrl;
+  const n = ((code || '') + ' ' + (name || '')).toLowerCase();
+  const map = [
+    ['whatsapp','https://cdn.simpleicons.org/whatsapp/25D366'],['telegram','https://cdn.simpleicons.org/telegram/26A5E4'],
+    ['instagram','https://cdn.simpleicons.org/instagram/E4405F'],['facebook','https://cdn.simpleicons.org/facebook/1877F2'],
+    ['tiktok','https://cdn.simpleicons.org/tiktok/FFFFFF'],['google','https://cdn.simpleicons.org/google/4285F4'],
+    ['dana','https://cdn.simpleicons.org/dana/118EEA'],['grab','https://cdn.simpleicons.org/grab/00B14F'],
+    ['gojek','https://cdn.simpleicons.org/gojek/00AA13'],['shopee','https://cdn.simpleicons.org/shopee/EE4D2D']
+  ];
+  for(const [k, url] of map){ if(n.includes(k)) return url; }
+  return null;
+}
+function renderWnServices(){
+  const grid = document.getElementById('wnServiceGrid');
+  if(!grid) return;
+  if(wnServices.length === 0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">Belum ada layanan</div>'; return; }
+  let h = '';
+  wnServices.forEach(s => {
+    const logo = getWnServiceLogo(s.code, s.name, s.img || s.image);
+    const active = wnSelectedService && wnSelectedService.id === s.id ? ' active' : '';
+    const iconHtml = logo ? '<img src="'+logo+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><span class="ico-fallback" style="display:none;">📱</span>' : '<span class="ico-fallback">📱</span>';
+    h += '<div class="wn-service-btn'+active+'" onclick="pilihWnService('+s.id+')">'+iconHtml+'<div>'+s.name+'</div></div>';
+  });
+  grid.innerHTML = h;
+  document.getElementById('wnServiceCount').innerText = wnServices.length + ' aplikasi';
+}
+function filterWnServices(){
+  const q = document.getElementById('wn-search-svc').value.toLowerCase();
+  document.querySelectorAll('#wnServiceGrid .wn-service-btn').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(q) ? 'flex' : 'none'; });
+}
+function pilihWnService(id){
+  const svc = wnServices.find(s => s.id === id);
+  if(!svc) return;
+  wnSelectedService = svc; wnSelectedCountry = null; wnProducts = [];
+  renderWnServices();
+  document.getElementById('stepDot1').classList.add('done'); document.getElementById('stepDot1').classList.remove('active');
+  document.getElementById('stepDot2').classList.add('active'); document.getElementById('stepDot3').classList.remove('active','done');
+  document.getElementById('selectedServiceLabel').innerText = svc.name;
+  document.getElementById('selectedServiceLabel2').innerText = svc.name;
+  document.getElementById('nokosStep2').classList.remove('hide');
+  document.getElementById('nokosStep3').classList.add('hide');
+  loadWnCountries();
+  setTimeout(() => document.getElementById('nokosStep2').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+async function loadWnCountries(){
+  const grid = document.getElementById('wnCountryGrid');
+  if(!grid) return;
+  if(wnCountries.length > 0){ renderWnCountries(); return; }
+  grid.innerHTML = '<div class="loading-box" style="grid-column:1/-1;"><div class="spinner-lg"></div><div>Memuat...</div></div>';
+  try{
+    const d = await wnFetch('/api/smscode/countries');
+    if(d.success && Array.isArray(d.data)){ wnCountries = d.data.filter(c => c.active !== false); renderWnCountries(); }
+    else grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + (d.message || 'Gagal') + '</div>';
+  }catch(e){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;color:#f87171;">❌ ' + e.message + '</div>'; }
+}
+function renderWnCountries(){
+  const grid = document.getElementById('wnCountryGrid');
+  if(!grid) return;
+  if(wnCountries.length === 0){ grid.innerHTML = '<div class="empty" style="grid-column:1/-1;">Belum ada negara</div>'; return; }
+  let h = '';
+  wnCountries.forEach(c => {
+    const active = wnSelectedCountry && wnSelectedCountry.id === c.id ? ' active' : '';
+    h += '<div class="wn-country-btn'+active+'" onclick="pilihWnCountry('+c.id+')"><span class="flag">'+(c.emoji||c.flag||'🌍')+'</span><div>'+c.name+'</div></div>';
+  });
+  grid.innerHTML = h;
+  document.getElementById('wnCountryCount').innerText = wnCountries.length + ' negara';
+}
+function filterWnCountries(){
+  const q = document.getElementById('wn-search-country').value.toLowerCase();
+  document.querySelectorAll('#wnCountryGrid .wn-country-btn').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(q) ? 'flex' : 'none'; });
+}
+async function pilihWnCountry(id){
+  const c = wnCountries.find(x => x.id === id);
+  if(!c) return;
+  wnSelectedCountry = c; renderWnCountries();
+  document.getElementById('stepDot2').classList.add('done'); document.getElementById('stepDot2').classList.remove('active');
+  document.getElementById('stepDot3').classList.add('active');
+  document.getElementById('selectedCountryLabel').innerText = c.name;
+  document.getElementById('nokosStep3').classList.remove('hide');
+  await loadWnProducts();
+  setTimeout(() => document.getElementById('nokosStep3').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+}
+async function loadWnProducts(){
+  const box = document.getElementById('wnProductList');
+  if(!box) return;
+  if(!wnSelectedService || !wnSelectedCountry){ box.innerHTML = '<div class="empty">Pilih aplikasi & negara dulu</div>'; return; }
+  box.innerHTML = '<div class="loading-box"><div class="spinner-lg"></div><div>Memuat...</div></div>';
+  try{
+    const d = await wnFetch('/api/smscode/products?platform_id=' + wnSelectedService.id + '&country_id=' + wnSelectedCountry.id);
+    if(d.success && Array.isArray(d.data)){ wnProducts = d.data.filter(p => p.active !== false); renderWnProducts(); }
+    else box.innerHTML = '<div class="empty" style="color:#f87171;">❌ ' + (d.message || 'Tidak ada produk') + '</div>';
+  }catch(e){ box.innerHTML = '<div class="empty" style="color:#f87171;">❌ ' + e.message + '</div>'; }
+}
+function renderWnProducts(){
+  const box = document.getElementById('wnProductList');
+  if(!box) return;
+  if(wnProducts.length === 0){ box.innerHTML = '<div class="empty">Tidak ada server</div>'; return; }
+  let h = '';
+  wnProducts.forEach(p => {
+    const modal = p.price || 0;
+    const jual = Math.ceil(modal * (1 + NOKOS_MARKUP/100));
+    const stock = p.available !== undefined ? p.available : (p.stock || 0);
+    let stockClass = 'stock-ok'; let stockText = '📦 ' + stock + ' stok';
+    if(stock <= 0){ stockClass = 'stock-empty'; stockText = '❌ HABIS'; }
+    else if(stock < 5){ stockClass = 'stock-low'; stockText = '⚠️ ' + stock + ' stok'; }
+    const disabled = stock <= 0 ? ' disabled' : '';
+    const onclick = stock <= 0 ? '' : 'onclick="konfirmasiOrderNokos('+p.id+')"';
+    h += '<div class="wn-product'+disabled+'" '+onclick+'><div class="info"><div class="nm">'+p.name+'</div><div class="meta"><span class="'+stockClass+'">'+stockText+'</span></div></div><div class="harga"><div class="p">'+fmtRp(jual)+'</div><div class="m">Modal '+fmtRp(modal)+'</div></div></div>';
+  });
+  box.innerHTML = h;
+  document.getElementById('wnProductCount').innerText = wnProducts.length + ' server';
+}
+async function konfirmasiOrderNokos(productId){
+  const p = wnProducts.find(x => x.id === productId);
+  if(!p){ toast('Produk tidak ditemukan', 'err'); return; }
+  const modal = p.price || 0;
+  const jual = Math.ceil(modal * (1 + NOKOS_MARKUP/100));
+  const diskonPct = currentUser.discount ? parseFloat(currentUser.discount) : 0;
+  const totalBayar = jual - Math.ceil(jual * diskonPct / 100);
+  if((currentUser.saldo || 0) < totalBayar){ toast('❌ Saldo tidak cukup!', 'err'); goTab('deposit'); return; }
+  if(!confirm('Konfirmasi Order Nokos\n\n📱 ' + wnSelectedService.name + '\n🌍 ' + wnSelectedCountry.name + '\n🖥️ ' + p.name + '\n\n💰 Total: ' + fmtRp(totalBayar))) return;
+  currentUser.saldo -= totalBayar;
+  const i = users.findIndex(u => u.username === currentUser.username);
+  if(i !== -1) users[i].saldo = currentUser.saldo;
+  localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+  updateProfile();
+  const nokosOrder = { id:'NKS-'+Date.now(), type:'NOKOS', user:currentUser.username, service:wnSelectedService.name, serviceId:wnSelectedService.id, country:wnSelectedCountry.name, countryId:wnSelectedCountry.id, productId:p.id, productName:p.name, modal:modal, price:totalBayar, profit:totalBayar-modal, diskon:diskonPct, trxId:'', phoneNumber:'', otp:'', status:'DIPROSES', date:new Date().toLocaleString('id-ID') };
+  orders.unshift(nokosOrder);
+  saveToCloud(); renderAll();
+  kirimNotif('📞 ORDER NOKOS\n\nUser: ' + currentUser.username + '\nApp: ' + nokosOrder.service + '\nNegara: ' + nokosOrder.country + '\nTotal: ' + fmtRp(totalBayar));
+  toast('✅ Order berhasil!', 'ok', 5000);
+  tampilkanNokosAktif(nokosOrder);
+  goTab('riwayat');
+}
+function resetNokosFlow(){
+  wnSelectedService = null; wnSelectedCountry = null; wnProducts = [];
+  document.getElementById('nokosStep2').classList.add('hide'); document.getElementById('nokosStep3').classList.add('hide');
+  document.getElementById('stepDot1').classList.remove('done'); document.getElementById('stepDot1').classList.add('active');
+  document.getElementById('stepDot2').classList.remove('done','active'); document.getElementById('stepDot3').classList.remove('done','active');
+  renderWnServices();
+}
+function closeActiveNokos(){ document.getElementById('nokosActiveOrder').classList.add('hide'); }
+function tampilkanNokosAktif(order){
+  const box = document.getElementById('nokosActiveBox');
+  if(!box) return;
+  document.getElementById('nokosActiveOrder').classList.remove('hide');
+  let html = '';
+  if(order.status === 'DIPROSES'){
+    html = '<div class="otp-display" style="border-color:#fbbf24;"><div style="font-size:56px;margin-bottom:10px;">⏳</div><div class="lbl" style="font-size:13px;color:#fbbf24;">SEDANG DIPROSES</div><div style="font-size:12px;color:#94a3b8;margin-top:10px;">Estimasi: 5-15 menit</div></div>';
+  } else if(order.phoneNumber){
+    const stMap = {'SELESAI':{cls:'wn-otp',txt:'✅ SELESAI'},'GAGAL':{cls:'wn-cancelled',txt:'❌ GAGAL'}};
+    const st = stMap[order.status] || {cls:'wn-otp', txt:'✅ '+order.status};
+    html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><div style="font-size:11px;color:#94a3b8;">ID: <b style="color:#fff;">'+order.id+'</b></div><span class="wn-status-badge '+st.cls+'">'+st.txt+'</span></div><div class="otp-display"><div class="lbl">📱 NOMOR VIRTUAL</div><div class="num">'+(order.phoneNumber||'-')+'</div><button class="copy-btn" onclick="copyText(\''+String(order.phoneNumber||'').replace(/'/g,"\\'")+'\')">📋 Copy</button><div class="lbl" style="margin-top:16px;">🔐 KODE OTP</div><div class="otp">'+(order.otp||'Menunggu...')+'</div>'+(order.otp ? '<button class="copy-btn" style="padding:8px 16px;font-size:12px;" onclick="copyText(\''+(order.otp||'')+'\')">📋 Copy OTP</button>' : '')+'</div>';
+  } else { html = '<div class="empty">Order tidak ditemukan</div>'; }
+  box.innerHTML = html;
+}
+function renderAdminNokos(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const c = document.getElementById('adminNokosContainer'); if(!c) return;
+  const nokos = orders.filter(o => o.type === 'NOKOS');
+  const cntEl = document.getElementById('adminNokosCount');
+  if(cntEl) cntEl.innerText = nokos.length + ' order';
+  if(nokos.length === 0){ c.innerHTML = '<div class="card-glass empty">Belum ada order nokos.</div>'; return; }
+  let h = '';
+  nokos.forEach(o => {
+    let stCls = 'wn-waiting', stTxt = 'DIPROSES';
+    if(o.status === 'SELESAI'){ stCls = 'wn-otp'; stTxt = 'SELESAI'; }
+    else if(o.status === 'GAGAL'){ stCls = 'wn-cancelled'; stTxt = 'GAGAL'; }
+    h += '<div class="ord-item"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><strong style="color:var(--pri);">'+o.id+'</strong><span class="wn-status-badge '+stCls+'">'+stTxt+'</span></div>';
+    h += '<div class="ord-row"><span>User</span><strong>'+o.user+'</strong></div>';
+    h += '<div class="ord-row"><span>Aplikasi</span><span>'+o.service+'</span></div>';
+    h += '<div class="ord-row"><span>Negara</span><span>'+o.country+'</span></div>';
+    h += '<div class="ord-row"><span>Total</span><strong style="color:var(--pri);">'+fmtRp(o.price)+'</strong></div>';
+    if(o.status === 'DIPROSES'){
+      h += '<div style="margin-top:10px;background:rgba(0,0,0,.4);padding:10px;border-radius:10px;">';
+      h += '<button class="btn btn-sm btn-blue" id="btnAuto-'+o.id+'" onclick="autoOrderWn(\''+o.id+'\')" style="margin-bottom:8px;">🚀 Auto Order</button>';
+      h += '<div class="form-group" style="margin-bottom:8px;"><label style="font-size:10px;">📱 Nomor</label><input type="text" id="nokos-num-'+o.id+'" value="'+(o.phoneNumber||'')+'" style="font-size:12px;padding:8px 10px;"></div>';
+      h += '<div class="form-group" style="margin-bottom:8px;"><label style="font-size:10px;">🔐 OTP</label><input type="text" id="nokos-otp-'+o.id+'" value="'+(o.otp||'')+'" style="font-size:12px;padding:8px 10px;"></div>';
+      h += '<div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="btn btn-sm btn-green" id="btnProses-'+o.id+'" onclick="prosesNokosManual(\''+o.id+'\')">✅ Kirim</button><button class="btn btn-sm btn-red" onclick="tolakNokos(\''+o.id+'\')">❌ Tolak</button><button class="btn btn-sm btn-gray" onclick="delOrder(\''+o.id+'\')">🗑️</button></div>';
+      h += '</div>';
+    } else {
+      h += '<div class="ord-row"><span>Nomor</span><strong style="color:#4ade80;">'+(o.phoneNumber||'-')+'</strong></div><div class="ord-row"><span>OTP</span><strong>'+(o.otp||'-')+'</strong></div>';
+      h += '<div style="margin-top:8px;"><button class="btn btn-sm btn-gray" onclick="delOrder(\''+o.id+'\')">🗑️ Hapus</button></div>';
+    }
+    h += '</div>';
+  });
+  c.innerHTML = h;
+}
+function prosesNokosManual(orderId){
+  const num = document.getElementById('nokos-num-' + orderId).value.trim();
+  const otp = document.getElementById('nokos-otp-' + orderId).value.trim();
+  if(!num || !otp){ toast('Isi nomor & OTP!', 'warn'); return; }
+  setBtnLoading('btnProses-' + orderId, true);
+  const o = orders.find(x => x.id === orderId);
+  if(!o){ setBtnLoading('btnProses-' + orderId, false, '✅ Kirim'); return; }
+  o.phoneNumber = num; o.otp = otp; o.status = 'SELESAI';
+  saveToCloud();
+  kirimNotif('✅ NOKOS SELESAI\n\nUser: ' + o.user + '\nNomor: ' + num + '\nOTP: ' + otp);
+  toast('✅ Dikirim!', 'ok'); renderAll();
+}
+function tolakNokos(orderId){
+  const o = orders.find(x => x.id === orderId); if(!o) return;
+  if(!confirm('Tolak & refund?')) return;
+  o.status = 'GAGAL';
+  const u = users.find(x => x.username === o.user);
+  if(u) u.saldo = (u.saldo||0) + o.price;
+  saveToCloud(); toast('Ditolak', 'info'); renderAll();
+}
+async function autoOrderWn(orderId){
+  const o = orders.find(x => x.id === orderId); if(!o) return;
+  if(!confirm('Auto order ke WN?')) return;
+  setBtnLoading('btnAuto-' + orderId, true);
+  try{
+    const d = await wnFetch('/api/smscode/order', { method: 'POST', body: { product_id:o.productId, app_id:o.serviceId, country_id:o.countryId, service_name:o.service } });
+    if(d.success && d.data){
+      o.trxId = d.data.trxId; o.phoneNumber = d.data.phoneNumber || '';
+      saveToCloud();
+      const numInp = document.getElementById('nokos-num-' + orderId);
+      if(numInp) numInp.value = o.phoneNumber;
+      toast('✅ Nomor: ' + o.phoneNumber, 'ok', 7000);
+      startPollWnOtp(orderId); renderAll();
+    } else { toast('❌ ' + (d.message || 'Gagal'), 'err', 5000); setBtnLoading('btnAuto-' + orderId, false, '🚀 Auto Order'); }
+  }catch(e){ toast('❌ ' + e.message, 'err'); setBtnLoading('btnAuto-' + orderId, false, '🚀 Auto Order'); }
+}
+function startPollWnOtp(orderId){
+  if(wnOtpPolls[orderId]) clearInterval(wnOtpPolls[orderId]);
+  wnOtpPolls[orderId] = setInterval(async () => {
+    const o = orders.find(x => x.id === orderId);
+    if(!o || !o.trxId || o.status === 'SELESAI' || o.status === 'GAGAL'){ clearInterval(wnOtpPolls[orderId]); delete wnOtpPolls[orderId]; return; }
+    try{
+      const d = await wnFetch('/api/smscode/status/' + o.trxId);
+      if(d.success && d.otp_code){
+        o.otp = d.otp_code; saveToCloud();
+        const otpInp = document.getElementById('nokos-otp-' + orderId);
+        if(otpInp) otpInp.value = d.otp_code;
+        toast('🎉 OTP: ' + d.otp_code, 'ok', 8000);
+        clearInterval(wnOtpPolls[orderId]); delete wnOtpPolls[orderId]; renderAll();
+      }
+    }catch(e){}
+  }, 5000);
+}
+async function refreshWnBalance(){
+  if(!currentUser || currentUser.role !== 'admin'){ toast('Khusus admin', 'err'); return; }
+  const textEl = document.getElementById('wnBalanceText');
+  const statEl = document.getElementById('wnBalanceStatus');
+  if(!textEl) return;
+  textEl.innerHTML = '<span class="spinner-sm"></span>';
+  setBtnLoading('btnRefreshWn', true);
+  try{
+    const d = await wnFetch('/api/user/profile');
+    if(d.success && d.data && d.data.balance !== undefined){
+      textEl.innerText = fmtRp(d.data.balance);
+      statEl.innerText = '✓ ' + (d.data.username || 'OK');
+      statEl.style.color = '#4ade80';
+    } else { textEl.innerText = 'Error'; statEl.innerText = '✗ ' + (d.message || 'Gagal'); statEl.style.color = '#f87171'; }
+  }catch(e){ textEl.innerText = 'Error'; statEl.innerText = '✗ ' + e.message; statEl.style.color = '#f87171'; }
+  setBtnLoading('btnRefreshWn', false, '🔄 Refresh');
+}
+function setWnDepoAmount(v){ document.getElementById('wn-depo-amount').value = v; }
+async function createWnDeposit(){
+  if(!currentUser || currentUser.role !== 'admin'){ toast('Khusus admin!', 'err'); return; }
+  const amount = parseInt(document.getElementById('wn-depo-amount').value);
+  if(!amount || amount < 2000){ toast('Minimal Rp 2.000', 'warn'); return; }
+  setBtnLoading('btnWnDepo', true);
+  try{
+    const d = await wnFetch('/api/deposit/create', { method: 'POST', body: { amount: amount, method: 'qris' } });
+    if(!d.success){ toast('❌ ' + (d.message || 'Gagal'), 'err', 5000); setBtnLoading('btnWnDepo', false, '📱 Buat Tagihan'); return; }
+    tampilWnQris(d);
+  }catch(e){ toast('❌ ' + e.message, 'err'); }
+  setBtnLoading('btnWnDepo', false, '📱 Buat Tagihan');
+}
+function tampilWnQris(d){
+  tutupWnQris();
+  const trxId = d.trxId || '-';
+  const qrImg = d.qr_image || d.qrImage || ('https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(d.qr_string || ''));
+  const total = d.total || d.amount || 0;
+  const html = '<div id="wnQrModal" class="modal-bg"><div class="modal"><h3 style="color:#fff;font-size:16px;margin-bottom:8px;font-weight:800;">💳 Deposit WN</h3><img src="' + qrImg + '"><div style="color:#4ade80;font-weight:900;font-size:22px;margin-bottom:6px;">' + fmtRp(total) + '</div><div id="wnQrStat" style="font-size:12px;color:#fbbf24;margin:12px 0;font-weight:700;">⏳ Menunggu...</div><button onclick="tutupWnQris()" class="btn btn-sec" style="margin-top:8px;">Tutup</button></div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+  if(window._wnQrPoll) clearInterval(window._wnQrPoll);
+  window._wnQrPoll = setInterval(async () => {
+    try{
+      const r = await wnFetch('/api/deposit/status/' + trxId);
+      const st = (r.status || '').toLowerCase();
+      const el = document.getElementById('wnQrStat');
+      if(!el) return;
+      if(st === 'success' || st === 'paid'){ clearInterval(window._wnQrPoll); el.innerHTML = '✅ BERHASIL!'; el.style.color = '#4ade80'; toast('✅ Deposit WN sukses!', 'ok', 5000); setTimeout(() => { tutupWnQris(); refreshWnBalance(); }, 2500); }
+    }catch(e){}
+  }, 8000);
+}
+function tutupWnQris(){ if(window._wnQrPoll){ clearInterval(window._wnQrPoll); window._wnQrPoll = null; } const m = document.getElementById('wnQrModal'); if(m) m.remove(); }
+
+/* ============================================================
+   DEPOSIT
+   ============================================================ */
+let qrPoll = null;
+function updateDepositPrice(){
+  const sel = document.getElementById('sel-deposit');
+  const o = sel.options[sel.selectedIndex];
+  let p = parseInt(o.getAttribute('data-price') || 0);
+  const man = parseInt(document.getElementById('inp-deposit-manual').value) || 0;
+  if(man > 0) p = man;
+  document.getElementById('prc-deposit').innerText = fmtRp(p);
+}
+function checkoutDeposit(){
+  const sel = document.getElementById('sel-deposit');
+  const o = sel.options[sel.selectedIndex];
+  let price = 0;
+  if(sel.value) price = parseInt(o.getAttribute('data-price') || 0);
+  else price = parseInt(document.getElementById('inp-deposit-manual').value) || 0;
+  if(!price || price < 1000){ toast("Minimal Rp 1.000", 'warn'); return; }
+  setBtnLoading('btnBuatQris', true);
+  fetch(FAYU_WORKER_URL + '/api/deposit/create', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ amount: price, user: currentUser.username }) })
+  .then(r => r.text().then(txt => ({ txt })))
+  .then(({ txt }) => {
+    let d; try { d = JSON.parse(txt); } catch(e){ throw new Error('Response bukan JSON'); }
+    if(!d.status){ toast('❌ ' + (d.error || 'Gagal'), 'err', 5000); return; }
+    if(!d.qrUrl){ toast('❌ QR tidak valid', 'err', 5000); return; }
+    tampilQrisDeposit(d);
+  })
+  .catch(e => toast('❌ ' + e.message, 'err', 5000))
+  .finally(() => setBtnLoading('btnBuatQris', false, '📱 Buat QRIS'));
+}
+function tampilQrisDeposit(d){
+  tutupQrisDeposit();
+  const html = '<div id="qrModal" class="modal-bg"><div class="modal"><h3 style="color:#fff;font-size:17px;margin-bottom:8px;font-weight:900;">Scan QRIS</h3><img src="' + d.qrUrl + '"><div style="color:var(--pri);font-weight:900;font-size:22px;margin-bottom:6px;">' + fmtRp(d.totalAmount||d.amount||0) + '</div><div id="qrStat" style="font-size:12px;color:var(--gold);margin-top:12px;font-weight:800;">⏳ Menunggu...</div><button onclick="tutupQrisDeposit()" class="btn btn-sec" style="margin-top:16px;">Tutup</button></div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+  qrPoll = setInterval(async function(){
+    try{
+      const r = await fetch(FAYU_WORKER_URL + '/api/deposit/status', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ trxId: d.trxId }) });
+      const data = await r.json();
+      const st = data.data ? data.data.status : data.status;
+      const el = document.getElementById('qrStat');
+      if(st === 'success' || st === 'completed' || st === 'paid'){
+        clearInterval(qrPoll); qrPoll = null;
+        if(el){ el.textContent = '✅ BERHASIL!'; el.style.color = '#4ade80'; }
+        setTimeout(function(){
+          tutupQrisDeposit();
+          const amt = d.amount || d.totalAmount || 0;
+          currentUser.saldo = (currentUser.saldo || 0) + amt;
+          const i = users.findIndex(function(u){ return u.username === currentUser.username; });
+          if(i !== -1) users[i].saldo = currentUser.saldo;
+          localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+          saveToCloud(); updateProfile();
+          toast('✅ Deposit +' + fmtRp(amt), 'ok', 5000);
+        }, 1500);
+      }
+    }catch(e){}
+  }, 8000);
+}
+function tutupQrisDeposit(){ if(qrPoll){ clearInterval(qrPoll); qrPoll = null; } const m = document.getElementById('qrModal'); if(m) m.remove(); }
+
+/* ============================================================
+   ADMIN DEPOSIT
+   ============================================================ */
+function renderAdminDeposit(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const c = document.getElementById('adminDepositContainer'); if(!c) return;
+  if(depositOrders.length === 0){ c.innerHTML = '<div class="card-glass empty">Tidak ada deposit.</div>'; return; }
+  let h = '';
+  depositOrders.forEach(d => {
+    h += '<div class="ord-item"><div class="ord-row"><span>ID/User</span><strong>'+d.id+' ('+d.user+')</strong></div><div class="ord-row"><span>Nominal</span><strong style="color:var(--pri);">'+fmtRp(d.price)+'</strong></div>'+(d.status==='PENDING' ? '<div style="margin-top:10px;display:flex;gap:6px;"><button class="btn btn-sm btn-green" onclick="approveDep(\''+d.id+'\')">✅ Setujui</button><button class="btn btn-sm btn-red" onclick="rejectDep(\''+d.id+'\')">❌ Tolak</button></div>' : '<div class="ord-row"><span>Status</span><span>'+d.status+'</span></div>')+'</div>';
+  });
+  c.innerHTML = h;
+}
+function approveDep(id){
+  const i = depositOrders.findIndex(d => d.id === id); if(i === -1) return;
+  const d = depositOrders[i]; if(d.status === 'SELESAI') return;
+  const u = users.find(x => x.username === d.user);
+  if(u) u.saldo = (u.saldo||0) + d.price;
+  depositOrders[i].status = 'SELESAI';
+  saveToCloud(); toast("✅ Disetujui!", 'ok'); renderAll();
+}
+function rejectDep(id){
+  const i = depositOrders.findIndex(d => d.id === id); if(i === -1) return;
+  depositOrders[i].status = 'GAGAL';
+  saveToCloud(); toast("❌ Ditolak", 'info'); renderAll();
+}
+
+/* ============================================================
+   USERS
+   ============================================================ */
+async function addUser(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const u = document.getElementById('newUsrName').value.trim();
+  const p = document.getElementById('newUsrPass').value.trim();
+  const fn = document.getElementById('newUsrFullName').value.trim() || u;
+  const s = parseInt(document.getElementById('newUsrSaldo').value) || 0;
+  const disc = parseFloat(document.getElementById('newUsrDiscount').value) || 0;
+  const r = document.getElementById('newUsrRole').value;
+  if(!u || !p){ toast("Isi username & pass!", 'warn'); return; }
+  if(users.some(x => x.username === u)){ toast("Username sudah ada!", 'warn'); return; }
+  const hp = await hashPassword(p);
+  users.push({username:u, pass:hp, saldo:s, role:r, fullName:fn, phone:'-', email:'-', age:17, avatar:'', isReseller:r==='admin'||r==='reseller', discount:disc});
+  saveToCloud();
+  ['newUsrName','newUsrPass','newUsrFullName'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newUsrSaldo').value = '0';
+  document.getElementById('newUsrDiscount').value = '0';
+  toast("✅ User ditambah!", 'ok'); renderAll();
+}
+function renderUsersList(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const c = document.getElementById('usersListContainer'); if(!c) return;
+  let h = '';
+  users.forEach((u, i) => {
+    const rb = u.role === 'admin' ? '<span class="badge-role role-admin">Admin</span>' : u.role === 'reseller' ? '<span class="badge-role role-reseller">Reseller</span>' : '<span class="badge-role role-user">User</span>';
+    h += '<div class="usr-item"><div class="ord-row"><span>Username</span><strong style="color:var(--pri);">'+u.username+'</strong></div><div class="ord-row"><span>Role</span><span>'+rb+'</span></div><div class="form-group" style="margin-bottom:8px;"><label>Nama</label><input type="text" id="eu-f-'+i+'" value="'+(u.fullName||'')+'"></div><div class="form-group" style="margin-bottom:8px;"><label>Saldo</label><input type="number" id="eu-s-'+i+'" value="'+(u.saldo||0)+'"></div><div class="form-group" style="margin-bottom:8px;"><label>Diskon (%)</label><input type="number" id="eu-d-'+i+'" value="'+(u.discount||0)+'"></div><div class="form-group" style="margin-bottom:8px;"><label>Role</label><select id="eu-r-'+i+'"><option value="user"'+(u.role==='user'?' selected':'')+'>User</option><option value="reseller"'+(u.role==='reseller'?' selected':'')+'>Reseller</option><option value="admin"'+(u.role==='admin'?' selected':'')+'>Admin</option></select></div><div style="display:flex;gap:6px;"><button class="btn btn-sm btn-green" onclick="updateUser('+i+')">💾</button><button class="btn btn-sm btn-red" onclick="delUser('+i+')">🗑️</button></div></div>';
+  });
+  c.innerHTML = h;
+  const total = users.reduce((a,u) => a + (u.saldo || 0), 0);
+  c.insertAdjacentHTML('afterbegin', '<div class="total-saldo-banner"><div class="l">💰 TOTAL SALDO SEMUA USER</div><div class="v">' + fmtRp(total) + '</div></div>');
+}
+function updateUser(i){
+  users[i].fullName = document.getElementById('eu-f-'+i).value.trim();
+  users[i].saldo = parseInt(document.getElementById('eu-s-'+i).value) || 0;
+  users[i].discount = parseFloat(document.getElementById('eu-d-'+i).value) || 0;
+  const newRole = document.getElementById('eu-r-'+i).value;
+  users[i].role = newRole;
+  users[i].isReseller = (newRole === 'admin' || newRole === 'reseller');
+  saveToCloud(); toast("✅ Update!", 'ok'); renderAll();
+}
+function delUser(i){
+  if(users[i].username === currentUser.username){ toast("Tidak bisa hapus diri sendiri!", 'err'); return; }
+  if(!confirm("Hapus user " + users[i].username + "?")) return;
+  users.splice(i, 1); saveToCloud(); renderAll(); toast('🗑️ Dihapus', 'ok');
+}
+
+/* ============================================================
+   CHAT
+   ============================================================ */
+function sendUserChat(){
+  const inp = document.getElementById('userChatInput'); const t = inp.value.trim(); if(!t) return;
+  chatMessages.push({id:'CHAT-'+Date.now(), sender:currentUser.username, recipient:'admin', message:t, timestamp:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), isAdminRead:false});
+  saveToCloud(); kirimNotif('💬 CHAT dari ' + currentUser.username + ':\n\n' + t); inp.value = ''; renderUserChat();
+}
+function renderUserChat(){
+  const c = document.getElementById('userChatMessages'); if(!c || !currentUser) return;
+  const mine = chatMessages.filter(x => x.sender === currentUser.username || x.recipient === currentUser.username);
+  if(mine.length === 0){ c.innerHTML = '<div style="text-align:center;color:var(--mut);font-size:11px;margin:auto;">Belum ada chat.</div>'; return; }
+  let h = '';
+  mine.forEach(x => {
+    const me = x.sender === currentUser.username;
+    h += '<div class="chat-bubble ' + (me?'user':'admin') + '"><div class="meta">' + (me?'👤 Anda':'🛡️ Admin') + ' • ' + x.timestamp + '</div><div class="msg">' + x.message + '</div></div>';
+  });
+  c.innerHTML = h; c.scrollTop = c.scrollHeight;
+}
+function renderAdminChatList(){
+  const c = document.getElementById('adminChatUserList'); if(!c) return;
+  const senders = [];
+  chatMessages.forEach(x => { if(x.sender !== 'admin' && senders.indexOf(x.sender) === -1) senders.push(x.sender); });
+  if(senders.length === 0){ c.innerHTML = '<div class="empty">Belum ada chat.</div>'; return; }
+  let h = '';
+  senders.forEach(un => {
+    const unread = chatMessages.filter(x => x.sender === un && !x.isAdminRead).length;
+    h += '<div class="chat-user-list-item" onclick="openAdminChat(\''+un+'\')"><div><div style="font-weight:800;font-size:13px;color:#fff;">'+un+(unread>0?' <span class="badge b-pending">'+unread+'</span>':'')+'</div></div><span style="color:var(--mut);">›</span></div>';
+  });
+  c.innerHTML = h;
+}
+function openAdminChat(un){
+  activeChatUser = un;
+  document.getElementById('adminActiveChatBox').style.display = 'block';
+  document.getElementById('activeChatTitle').innerText = '💬 Chat: ' + un;
+  chatMessages.forEach(x => { if(x.sender === un) x.isAdminRead = true; });
+  saveToCloud(); renderAdminChatMessages(un); updateUnread();
+}
+function renderAdminChatMessages(un){
+  const c = document.getElementById('adminChatMessages'); if(!c) return;
+  const target = chatMessages.filter(x => x.sender === un || x.recipient === un);
+  let h = '';
+  target.forEach(x => {
+    const isU = x.sender === un;
+    h += '<div class="chat-bubble ' + (isU?'user':'admin') + '"><div class="meta">' + (isU?'👤 '+un:'🛡️ Admin') + ' • ' + x.timestamp + '</div><div class="msg">' + x.message + '</div></div>';
+  });
+  c.innerHTML = h; c.scrollTop = c.scrollHeight;
+}
+function sendAdminChat(){
+  if(!activeChatUser) return;
+  const inp = document.getElementById('adminChatInput'); const t = inp.value.trim(); if(!t) return;
+  chatMessages.push({id:'CHAT-'+Date.now(), sender:'admin', recipient:activeChatUser, message:t, timestamp:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), isAdminRead:true});
+  saveToCloud(); inp.value = ''; renderAdminChatMessages(activeChatUser);
+}
+function updateUnread(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const c = chatMessages.filter(x => x.sender !== 'admin' && !x.isAdminRead).length;
+  const b = document.getElementById('unreadChatCount'); if(b) b.innerText = c;
+}
+
+/* ============================================================
+   STATISTIK & NOTIF
+   ============================================================ */
+function renderStatistik(){
+  if(!currentUser || currentUser.role !== 'admin') return;
+  const sukses = orders.filter(o => o.status === 'SELESAI');
+  const omzet = sukses.reduce((a,c) => a + (c.price || 0), 0);
+  document.getElementById('stOmzet').innerText = fmtRp(omzet);
+  document.getElementById('stOrder').innerText = sukses.length;
+  document.getElementById('stPending').innerText = orders.filter(o => o.status === 'DIPROSES' || o.status === 'PROCESSING').length;
+  document.getElementById('stUsers').innerText = users.length;
+}
+async function refreshFayuBalance(){
+  const bt = document.getElementById('fayuBalanceText');
+  const st = document.getElementById('fayuStatusText');
+  if(!bt || !st) return;
+  bt.innerHTML = '<span class="spinner-sm"></span>';
+  setBtnLoading('btnRefreshFayu', true);
+  try{
+    const res = await fetch(`${FAYU_WORKER_URL}/balance`, {method:'POST'});
+    const d = await res.json();
+    if(d.status && d.balance !== undefined){ bt.innerText = fmtRp(d.balance); st.innerText = '✓ Online'; st.style.color = '#22c55e'; }
+    else { bt.innerText = 'Error'; st.innerText = '✗ ' + (d.msg || 'Gagal'); st.style.color = '#f87171'; }
+  }catch(e){ bt.innerText = 'Offline'; st.innerText = '✗ ' + e.message; st.style.color = '#f87171'; }
+  setBtnLoading('btnRefreshFayu', false, '🔄 Refresh');
+}
+async function testTelegram(){
+  setBtnLoading('btnTestTg', true);
+  try{ const res = await fetch(`${FAYU_WORKER_URL}/telegram`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:'🔔 Test TG'})}); const d = await res.json(); toast(d.status ? '✅ TG OK' : '❌ '+d.msg, d.status ? 'ok' : 'err'); }catch(e){ toast('❌ '+e.message, 'err'); }
+  setBtnLoading('btnTestTg', false, '✈️ Test Telegram');
+}
+async function testWA(){
+  setBtnLoading('btnTestWa', true);
+  try{ const res = await fetch(`${FAYU_WORKER_URL}/wa`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:'🔔 Test WA'})}); const d = await res.json(); toast(d.status ? '✅ WA OK' : '❌ '+d.msg, d.status ? 'ok' : 'err'); }catch(e){ toast('❌ '+e.message, 'err'); }
+  setBtnLoading('btnTestWa', false, '💬 Test WhatsApp');
+}
+
+/* ============================================================
+   UI HELPERS
+   ============================================================ */
+function openDrawer(){ document.getElementById('drawer').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
+function initProfileForm(){
+  document.getElementById('editProfileUser').value = currentUser.username;
+  document.getElementById('editProfileName').value = currentUser.fullName || '';
+  document.getElementById('editProfilePhone').value = currentUser.phone || '';
+  document.getElementById('editProfileEmail').value = currentUser.email || '';
+  document.getElementById('editProfileAge').value = currentUser.age || '';
+  document.getElementById('editProfileAvatar').value = currentUser.avatar || '';
+}
+function saveMyProfile(){
+  currentUser.fullName = document.getElementById('editProfileName').value.trim() || currentUser.username;
+  currentUser.phone = document.getElementById('editProfilePhone').value.trim();
+  currentUser.email = document.getElementById('editProfileEmail').value.trim();
+  currentUser.age = parseInt(document.getElementById('editProfileAge').value) || 0;
+  currentUser.avatar = document.getElementById('editProfileAvatar').value.trim();
+  const i = users.findIndex(u => u.username === currentUser.username);
+  if(i !== -1) users[i] = currentUser;
+  localStorage.setItem('bieber_current_user', JSON.stringify(currentUser));
+  saveToCloud(); updateProfile();
+  toast("✅ Profil tersimpan!", 'ok');
+}
+function goTab(id){
+  const adminTabs = ['admin-chat','admin','admin-products','admin-poster','admin-nokos','admin-deposit','users','statistik','cek-saldo','notif-setting'];
+  if(adminTabs.indexOf(id) !== -1 && (!currentUser || currentUser.role !== 'admin')){ toast("Akses ditolak!", 'err'); return; }
+  const secs = ['premium','sosmed','nokos','deposit','galeri','livechat','profile','riwayat','riwayat-deposit','admin-chat','admin','admin-products','admin-poster','admin-nokos','admin-deposit','users','statistik','cek-saldo','notif-setting'];
+  secs.forEach(s => { const el = document.getElementById('sec-' + s); if(el) el.classList.add('hide'); });
+  const t = document.getElementById('sec-' + id); if(t) t.classList.remove('hide');
+  closeDrawer();
+  if(id === 'admin') renderAdminOrders();
+  else if(id === 'admin-products') renderAdminProducts();
+  else if(id === 'admin-poster') renderAdminPoster();
+  else if(id === 'admin-nokos'){ renderAdminNokos(); refreshWnBalance(); }
+  else if(id === 'admin-deposit') renderAdminDeposit();
+  else if(id === 'admin-chat'){ renderAdminChatList(); updateUnread(); }
+  else if(id === 'users') renderUsersList();
+  else if(id === 'riwayat') renderRiwayat();
+  else if(id === 'riwayat-deposit') renderRiwayatDeposit();
+  else if(id === 'livechat') renderUserChat();
+  else if(id === 'statistik') renderStatistik();
+  else if(id === 'cek-saldo') refreshFayuBalance();
+  else if(id === 'premium') renderPremiumGrid();
+  else if(id === 'galeri') renderGaleri();
+  else if(id === 'sosmed') loadAllFayuServices();
+  else if(id === 'nokos') loadWnServices();
+}
+
+/* ============================================================
+   LOAD & SYNC
+   ============================================================ */
+window.addEventListener('load', async function(){
+  try{
+    const lu = JSON.parse(localStorage.getItem('bieber_users')||'null'); if(lu && Array.isArray(lu) && lu.length > 0) users = lu;
+    const lpa = JSON.parse(localStorage.getItem('bieber_premium_apps')||'null'); if(lpa && Array.isArray(lpa) && lpa.length > 0) premiumApps = lpa;
+    const lpo = JSON.parse(localStorage.getItem('bieber_posters')||'null'); if(lpo && Array.isArray(lpo)) posterList = lpo;
+    const ls = JSON.parse(localStorage.getItem('bieber_services')||'null'); if(ls) services = ls;
+    const lo = JSON.parse(localStorage.getItem('bieber_orders')||'[]'); if(Array.isArray(lo)) orders = lo;
+    const ld = JSON.parse(localStorage.getItem('bieber_deposit_orders')||'[]'); if(Array.isArray(ld)) depositOrders = ld;
+    const lc = JSON.parse(localStorage.getItem('bieber_chats')||'[]'); if(Array.isArray(lc)) chatMessages = lc;
+    const lcur = JSON.parse(localStorage.getItem('bieber_current_user')||'null');
+    if(lcur && lcur.username){ const f = users.find(u => u.username === lcur.username); if(f) currentUser = f; }
+  }catch(e){}
+  await migratePasswords();
+  waitForFirebase();
+});
+function waitForFirebase(){ if(window.__firebaseReady && window.__fb){ firebaseReady = true; startRealtimeListener(); } else setTimeout(waitForFirebase, 200); }
+function startRealtimeListener(){
+  const { onValue, dataRef } = window.__fb;
+  onValue(dataRef, async function(snapshot){
+    const data = snapshot.val();
+    if(!data){ uploadDefaultData(); return; }
+    if(data.users && data.users.length > 0) users = data.users;
+    if(data.premiumApps && data.premiumApps.length > 0) premiumApps = data.premiumApps;
+    if(data.posterList && Array.isArray(data.posterList)) posterList = data.posterList;
+    if(data.services) services = data.services;
+    if(data.orders) orders = data.orders;
+    if(data.depositOrders) depositOrders = data.depositOrders;
+    if(data.chatMessages) chatMessages = data.chatMessages;
+    await migratePasswords(); saveLocal();
+    if(currentUser){ const fresh = users.find(u => u.username === currentUser.username); if(fresh){ currentUser = fresh; localStorage.setItem('bieber_current_user', JSON.stringify(currentUser)); } }
+    const st = document.getElementById('syncStatus'); if(st) st.innerText = 'Sync ' + new Date().toLocaleTimeString('id-ID');
+    if(!isDataLoaded){ isDataLoaded = true; document.getElementById('loadingOverlay').style.display = 'none'; if(currentUser) showApp(); else document.getElementById('loginPage').style.display = 'flex'; }
+    else if(currentUser) renderAll();
+  }, function(err){
+    document.getElementById('loadingOverlay').style.display = 'none';
+    if(currentUser) showApp(); else document.getElementById('loginPage').style.display = 'flex';
+  });
+  setTimeout(() => {
+    if(!isDataLoaded){ isDataLoaded = true; document.getElementById('loadingOverlay').style.display = 'none'; if(currentUser) showApp(); else document.getElementById('loginPage').style.display = 'flex'; }
+  }, 3000);
+}
+async function uploadDefaultData(){
+  const { set, dataRef } = window.__fb;
+  const hu = [];
+  for(const u of defaultUsers) hu.push({...u, pass: await hashPassword(u.pass)});
+  users = hu;
+  set(dataRef, {services, users: hu, premiumApps, posterList, orders: [], depositOrders: [], chatMessages: []});
+}
+function saveLocal(){
+  localStorage.setItem('bieber_services', JSON.stringify(services));
+  localStorage.setItem('bieber_users', JSON.stringify(users));
+  localStorage.setItem('bieber_premium_apps', JSON.stringify(premiumApps));
+  localStorage.setItem('bieber_posters', JSON.stringify(posterList));
+  localStorage.setItem('bieber_orders', JSON.stringify(orders));
+  localStorage.setItem('bieber_deposit_orders', JSON.stringify(depositOrders));
+  localStorage.setItem('bieber_chats', JSON.stringify(chatMessages));
+}
+function saveToCloud(){ saveLocal(); if(!firebaseReady) return; const { set, dataRef } = window.__fb; set(dataRef, {services, users, premiumApps, posterList, orders, depositOrders, chatMessages}); }
+function showApp(){
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('appPage').classList.add('show');
+  updateProfile();
+  if(currentUser.role === 'admin'){ document.getElementById('adminMenuSection').style.display = 'block'; renderAdminChatList(); updateUnread(); }
+  populateDropdowns(); renderAll(); initProfileForm();
+}
+function updateProfile(){
+  if(!currentUser) return;
+  document.getElementById('drawerName').innerText = currentUser.fullName || currentUser.username;
+  document.getElementById('drawerDetail').innerHTML = 'Saldo: <strong style="color:#22c55e">' + fmtRp(currentUser.saldo||0) + '</strong>';
+  const av = currentUser.avatar && currentUser.avatar.startsWith('http') ? currentUser.avatar : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + currentUser.username;
+  document.getElementById('drawerAvatar').src = av;
+  const bc = document.getElementById('drawerBadgeContainer');
+  if(currentUser.role === 'admin') bc.innerHTML = '<div class="badge-reseller" style="background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;">🛡️ Admin</div>';
+  else if(currentUser.role === 'reseller' || currentUser.isReseller) bc.innerHTML = '<div class="badge-reseller">👑 Reseller</div>';
+  else if(currentUser.discount > 0) bc.innerHTML = '<div class="badge-reseller">🎁 Diskon ' + currentUser.discount + '%</div>';
+  else bc.innerHTML = '<div class="badge-member">👤 Regular</div>';
+}
+function renderAll(){
+  if(!currentUser) return;
+  updateProfile();
+  renderRiwayat(); renderRiwayatDeposit(); renderUserChat(); renderPremiumGrid();
+  renderPosterSlider(); renderGaleri();
+  if(currentUser.role === 'admin'){
+    renderAdminOrders(); renderAdminProducts(); renderAdminPoster(); renderAdminNokos(); renderAdminDeposit(); renderUsersList();
+    renderAdminChatList(); updateUnread();
+    if(activeChatUser) renderAdminChatMessages(activeChatUser);
+  }
+}
+function populateDropdowns(){
+  const selD = document.getElementById('sel-deposit');
+  if(selD){
+    selD.innerHTML = '<option value="" data-price="0">-- Pilih Nominal --</option>';
+    (services.deposit || []).forEach(s => { const o = document.createElement('option'); o.value = s.name; o.setAttribute('data-price', s.price); o.innerText = s.name + ' — ' + fmtRp(s.price); selD.appendChild(o); });
+  }
+}
+document.addEventListener('input', function(e){
+  if(e.target && e.target.id === 'inp-deposit-manual'){
+    const p = parseInt(e.target.value) || 0;
+    document.getElementById('prc-deposit').innerText = fmtRp(p);
+    if(document.getElementById('sel-deposit')) document.getElementById('sel-deposit').value = '';
+  }
+});
+function exportBackup(){
+  if(!currentUser || currentUser.role !== 'admin'){ toast('Khusus admin', 'err'); return; }
+  const data = { exportedAt:new Date().toISOString(), users, premiumApps, posterList, orders, depositOrders, chatMessages, services };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'bieberpedia-backup-' + new Date().toISOString().slice(0,10) + '.json'; a.click(); URL.revokeObjectURL(url);
+  toast('✅ Backup didownload', 'ok');
+}
+
+/* ============================================================
+   EXPORT FUNCTIONS
+   ============================================================ */
+Object.assign(window, {
+  handleAuth, handleRegister, showLogin, showRegister, logout, goTab, openDrawer, closeDrawer,
+  saveMyProfile, sendUserChat, sendAdminChat, openAdminChat,
+  updatePremiumPrice, updateDepositPrice, updateFayuPrice, checkoutDeposit,
+  tampilQrisDeposit, tutupQrisDeposit, approveDep, rejectDep,
+  addUser, updateUser, delUser, renderStatistik,
+  openPremiumForm, backToPremiumGrid, checkoutPremiumOrder, filterPremiumApps,
+  addPremiumApp, editPremiumApp, toggleSoldApp, delPremiumApp, addPackage, editPackage,
+  toggleSoldPackage, delPackage, renderAdminProducts,
+  renderAdminOrders, kirimAkunManual, tolakOrder, delOrder,
+  addPoster, editPosterUrl, editPosterTitle, editPosterLink, movePoster, delPoster, renderAdminPoster,
+  gotoSlide, nextSlide, prevSlide,
+  loadAllFayuServices, selectFayuCategory, backToFayuCategories, filterCategory, filterServices, checkoutFayuOrder,
+  loadWnServices, pilihWnService, pilihWnCountry, filterWnServices, filterWnCountries,
+  konfirmasiOrderNokos, resetNokosFlow, closeActiveNokos, tampilkanNokosAktif,
+  renderAdminNokos, prosesNokosManual, tolakNokos, autoOrderWn, refreshWnBalance,
+  setWnDepoAmount, createWnDeposit, tampilWnQris, tutupWnQris, refreshFayuBalance,
+  toast, copyText, kirimNotif, testTelegram, testWA, exportBackup
+});
+
+console.log('✅ Bieberpedia v17 - Poster Slider (geser otomatis) + Kelola Poster Admin');
+</script>
+</body>
+</html>
